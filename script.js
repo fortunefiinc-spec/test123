@@ -17,7 +17,7 @@ const resultEl = document.getElementById('result');
 const logEl = document.getElementById('log');
 const legendEl = document.getElementById('legend');
 
-// Logo (plaats logo.png naast dit bestand)
+// Logo (optioneel): plaats logo.png naast deze bestanden
 const logo = new Image();
 logo.src = 'logo.png';
 
@@ -33,7 +33,7 @@ function renderLegend() {
 renderLegend();
 
 const size = Math.min(canvas.width, canvas.height);
-const radius = size * 0.44;
+const radius = size * 0.44;   // iets kleiner voor ring/lampjes
 const center = { x: canvas.width/2, y: canvas.height/2 };
 let currentAngle = 0;
 const sliceAngle = (Math.PI * 2) / segments.length;
@@ -44,7 +44,7 @@ function drawWheel() {
   ctx.translate(center.x, center.y);
   ctx.rotate(currentAngle);
 
-  // Buitenste ring
+  // --- Buitenste gouden ring ---
   ctx.beginPath();
   ctx.arc(0, 0, radius + 18, 0, Math.PI * 2);
   ctx.lineWidth = 14;
@@ -55,7 +55,7 @@ function drawWheel() {
   ctx.strokeStyle = ringGrad;
   ctx.stroke();
 
-  // Lampjes
+  // --- Lampjes ---
   const bulbs = 60;
   for (let i = 0; i < bulbs; i++) {
     const a = (i / bulbs) * Math.PI * 2;
@@ -71,11 +71,12 @@ function drawWheel() {
     ctx.fill();
   }
 
-  // Slices
+  // --- Sectoren ---
   for (let i = 0; i < segments.length; i++) {
     const seg = segments[i];
     const start = i * sliceAngle;
     const end = start + sliceAngle;
+
     ctx.beginPath();
     ctx.moveTo(0, 0);
     ctx.arc(0, 0, radius, start, end);
@@ -96,13 +97,13 @@ function drawWheel() {
     ctx.rotate(start + sliceAngle / 2);
     ctx.textAlign = 'right';
     ctx.fillStyle = '#0f1014';
-    ctx.font = `${Math.floor(radius * 0.09)}px sans-serif`;
+    ctx.font = `${Math.floor(radius * 0.09)}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
     ctx.translate(radius * 0.9, 0);
     wrapText(ctx, seg.label, 0, 0, radius * 0.38, radius * 0.09);
     ctx.restore();
   }
 
-  // Binnenste hub
+  // --- Binnenhub ---
   ctx.beginPath();
   ctx.arc(0, 0, radius * 0.18, 0, Math.PI * 2);
   const hubGrad = ctx.createLinearGradient(-20, -20, 20, 20);
@@ -117,7 +118,7 @@ function drawWheel() {
   ctx.strokeStyle = ringGrad;
   ctx.stroke();
 
-  // Logo in het midden
+  // --- Logo in midden ---
   if (logo && logo.complete) {
     const s = radius * 0.24;
     ctx.save();
@@ -161,22 +162,14 @@ function shade(hex, pct){
   return `rgb(${r},${g},${b})`;
 }
 
-function weightedChoice(items, weightKey = 'weight') {
-  const total = items.reduce((acc, it) => acc + (it[weightKey] || 0), 0);
-  let r = Math.random() * total;
-  for (let i = 0; i < items.length; i++) {
-    r -= (items[i][weightKey] || 0);
-    if (r <= 0) return i;
-  }
-  return items.length - 1;
-}
-
+// === FIX: uitkomst uitlijnen op BOVEN bij neerwaartse pointer ===
 function angleForIndex(index) {
   const targetSliceMid = index * sliceAngle + sliceAngle / 2;
-  return (Math.PI * 2 - targetSliceMid) % (Math.PI * 2);
+  return (3 * Math.PI / 2 - targetSliceMid + Math.PI * 2) % (Math.PI * 2);
 }
 
 let spinning = false;
+
 function spin() {
   if (spinning) return;
   spinning = true;
@@ -185,13 +178,13 @@ function spin() {
 
   const winnerIndex = weightedChoice(segments);
   const baseTarget = angleForIndex(winnerIndex);
-  const extraTurns = 4 + Math.floor(Math.random() * 3);
+  const extraTurns = 4 + Math.floor(Math.random() * 3); // 4..6 rondjes
   const targetAngle = baseTarget + extraTurns * Math.PI * 2;
 
   const startAngle = currentAngle % (Math.PI * 2);
   const delta = shortestRotation(startAngle, targetAngle);
 
-  const duration = 3800 + Math.random() * 900;
+  const duration = 3800 + Math.random() * 900; // ms
   const start = performance.now();
 
   function frame(now) {
@@ -215,6 +208,16 @@ function spin() {
   requestAnimationFrame(frame);
 }
 
+function weightedChoice(items, weightKey = 'weight') {
+  const total = items.reduce((acc, it) => acc + (it[weightKey] || 0), 0);
+  let r = Math.random() * total;
+  for (let i = 0; i < items.length; i++) {
+    r -= (items[i][weightKey] or 0);
+    if (r <= 0) return i;
+  }
+  return items.length - 1;
+}
+
 function shortestRotation(from, to) {
   let delta = to - from;
   while (delta <= 0) delta += Math.PI * 2;
@@ -223,6 +226,7 @@ function shortestRotation(from, to) {
 function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
 function appendLog(line) { const el = document.createElement('div'); el.textContent = line; logEl.prepend(el); }
 
+// Init
 drawWheel();
 spinBtn.addEventListener('click', spin);
 logo.addEventListener('load', drawWheel);

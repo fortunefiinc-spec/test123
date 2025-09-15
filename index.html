@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
   <meta charset="utf-8" />
-  <title>FortuneFi Wheel – V1.5</title>
+  <title>FortuneFi Wheel – V1.5 (Top Pointer Fix)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css">
 </head>
@@ -15,19 +15,18 @@
 
     <div class="panel">
       <h1>Spin het Rad</h1>
-      <p class="muted">Klik op <b>SPIN</b> om te draaien. De gouden pointer markeert de winnende sector.</p>
+      <p class="muted">Klik op <b>SPIN</b> om te draaien. De <b>gouden pijl</b> bovenaan markeert de winnende sector.</p>
       <button id="spinBtn">SPIN</button>
       <div class="result" id="result">Nog geen resultaat.</div>
 
       <div class="legend" id="legend"></div>
-
       <div class="result log" id="log"></div>
 
       <p class="muted" style="margin-top:12px">
         🔧 <b>Kansen aanpassen?</b><br/>
         Bewerk de <code>segments</code> array in <code>script.js</code> (label, kleur, <i>weight</i>). Hogere <i>weight</i> = grotere kans.
       </p>
-      <ul>
+      <ul class="muted">
         <li>Front-end only (geen blockchain) – perfect voor prototype.</li>
         <li>Later: vervang RNG door <i>Chainlink VRF</i> in je smart contract.</li>
       </ul>
