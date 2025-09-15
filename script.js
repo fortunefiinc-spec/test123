@@ -189,3 +189,22 @@ function appendLog(line){ const el=document.createElement('div'); el.textContent
 drawWheel();
 spinBtn.addEventListener('click', spin);
 logo.addEventListener('load', drawWheel);
+
+
+// -- Whitepaper & Lore toggles --
+(function(){
+  const wpBtn = document.getElementById('whitepaperBtn');
+  const loreBtn = document.getElementById('loreBtn');
+  const wpEl = document.getElementById('whitepaper');
+  const loreEl = document.getElementById('lore');
+
+  function toggle(el){
+    if(!el) return;
+    el.classList.toggle('hidden');
+    if(!el.classList.contains('hidden')){
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+  if(wpBtn && wpEl) wpBtn.addEventListener('click', ()=> toggle(wpEl));
+  if(loreBtn && loreEl) loreBtn.addEventListener('click', ()=> toggle(loreEl));
+})();

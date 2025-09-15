@@ -48,6 +48,14 @@
     .pill { display:inline-flex; align-items:center; gap:8px; background:#121420; border:1px solid #22263a; padding:6px 10px; border-radius:999px; font-size:12px; color:#cdd3e6; }
     .dot { width:10px; height:10px; border-radius:50%; }
     .log { margin-top:12px; max-height:140px; overflow:auto; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:12px; color:#aab3cf; }
+  
+    /* Extra UI for Whitepaper & Lore */
+    .row{ display:flex; gap:8px; margin-top:8px; }
+    .btn-secondary{ background:transparent; color:var(--text); border:1px solid #2b2f42; box-shadow:none; }
+    .btn-ghost{ background:#121420; border:1px solid #22263a; color:#cdd3e6; box-shadow:none; }
+    .hidden{ display:none; }
+    .collapsible{ margin-top:10px; }
+
   </style>
 </head>
 <body>
@@ -61,6 +69,44 @@
       <h1>Spin het Rad</h1>
       <p class="muted">Klik op <b>SPIN</b> om te draaien. De <b>gouden pijl</b> bovenaan markeert de winnende sector.</p>
       <button id="spinBtn">SPIN</button>
+      <div class="row">
+        <button id="whitepaperBtn" class="btn-secondary">WHITEPAPER</button>
+        <button id="loreBtn" class="btn-ghost">LORE</button>
+      </div>
+
+      <div id="whitepaper" class="result collapsible hidden">
+        <b>📄 Updated Whitepaper — FortuneFI ($FFI)</b><br/><br/>
+        <b>1. Abstract</b><br/>
+        FortuneFI is a MemeFi Loot Game that combines NFTs, DeFi, and meme culture into a fair, transparent ecosystem.
+        Instead of jackpots, users earn NFT Tickets that grant access to Loot Pools funded by every $FFI transaction.
+        This creates a system where anyone can play for free, collect tradable NFTs, and access community reward events — legally framed as GameFi, not gambling.
+        <br/><br/>
+        <b>2. Problem Statement</b><br/>
+        Traditional lotteries → centralization, licenses, barriers. Classic P2E → grindy, inflationary.
+        FortuneFI solves this with NFT Tickets, transparent Loot Pools, and MemeFi branding for community-driven virality.
+        <br/><br/>
+        <b>3. Solution</b><br/>
+        Free-to-Play: 1 free spin daily. Standard Tickets: buy with $FFI, access Loot Pools + boosts. Premium (Diamond): stronger odds, RWA rewards, VIP Loot Drops.
+        <br/><br/>
+        <b>4. Loot Pools</b><br/>
+        Every $FFI tx funds the treasury. Distribution: 55% Monthly / 20% Quarterly / 25% Yearly. Rewards include $FFI airdrops, NFT upgrades, RWA fractions.
+        <br/><br/>
+        <b>5. NFT Tiers</b><br/>
+        Common, Silver (+2% APY), Gold (+5% APY), Diamond (+10% APY & RWA).
+        <br/><br/>
+        <b>6. Tokenomics</b><br/>
+        Supply 1B $FFI. 30% Presale, 25% Liquidity, 20% Rewards, 10% Community, 10% Team (24m vest), 5% Marketing.
+        <br/><br/>
+        <b>7–10</b><br/>
+        Presale with ticket perks • Roadmap to staking & RWA Loot Drops • Community leaderboards/referrals/memes • Conclusion: Loot Game, not lottery.
+      </div>
+
+      <div id="lore" class="result collapsible hidden">
+        <b>Welcome, Keeper!</b><br/>
+        FortuneFi spins into existence. Tickets are being forged. Loot Pools awaken.<br/>
+        <i>Coming soon:</i> presale gates, daily spins with NFT boosts, and the first VIP Loot Drop.
+      </div>
+
       <div class="result" id="result">Nog geen resultaat.</div>
 
       <div class="legend" id="legend"></div>
