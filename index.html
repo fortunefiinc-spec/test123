@@ -2,126 +2,62 @@
 <html lang="nl">
 <head>
   <meta charset="utf-8" />
-  <title>FortuneFi Wheel – V1.5</title>
+  <title>FortuneFi — MemeFi Loot Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root { --bg:#0b0c11; --panel:#12141c; --accent:#f6c54a; --text:#e9ecf2; }
-    * { box-sizing: border-box; }
-    body {
-      margin:0; min-height:100vh; display:grid; place-items:center;
-      background: radial-gradient(80% 80% at 50% 15%, #161a27, var(--bg));
-      color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-    }
-    .wrap {
-      width: min(94vw, 980px);
-      display:grid; grid-template-columns: 1fr 340px; gap:28px; align-items:center;
-    }
-    @media (max-width: 880px){ .wrap{ grid-template-columns: 1fr; } }
-    .stage {
-      background: linear-gradient(180deg, #0f1118 0%, #0c0e15 100%);
-      border: 1px solid #23263a; border-radius:18px; padding:22px; position:relative;
-      box-shadow: 0 12px 50px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03);
-    }
-    canvas { width:100%; height:auto; display:block; border-radius:12px; }
-    .pointer {
-      position:absolute; inset-inline:0; top:-22px; margin-inline:auto; width:0; height:0;
-      border-left:18px solid transparent; border-right:18px solid transparent; border-top:28px solid var(--accent);
-      filter: drop-shadow(0 6px 12px rgba(246,197,74,.45)) drop-shadow(0 2px 4px rgba(0,0,0,.6));
-    }
-    .panel {
-      background: var(--panel); border: 1px solid #232633; border-radius:16px; padding:18px;
-      box-shadow: 0 10px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03);
-    }
-    h1 { font-size:20px; margin:0 0 12px; letter-spacing:.2px; }
-    .muted { color:#b9bfd3; font-size:14px; margin:0 0 12px; }
-    button {
-      appearance:none; border:none; background:var(--accent); color:#0d0e10;
-      padding:12px 16px; border-radius:10px; font-weight:700; cursor:pointer; width:100%;
-      box-shadow: 0 8px 22px rgba(246,197,74,.35);
-    }
-    button[disabled] { opacity:.6; cursor:not-allowed; }
-    .result {
-      margin-top:12px; padding:10px 12px; border-radius:10px; background:#121420; border:1px solid #22263a; font-size:14px;
-    }
-    ul { margin:8px 0 0 18px; padding:0; font-size:14px; line-height:1.6; color:#cdd3e6; }
-    .legend { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
-    .pill { display:inline-flex; align-items:center; gap:8px; background:#121420; border:1px solid #22263a; padding:6px 10px; border-radius:999px; font-size:12px; color:#cdd3e6; }
-    .dot { width:10px; height:10px; border-radius:50%; }
-    .log { margin-top:12px; max-height:140px; overflow:auto; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:12px; color:#aab3cf; }
-  
-    /* Extra UI for Whitepaper & Lore */
-    .row{ display:flex; gap:8px; margin-top:8px; }
-    .btn-secondary{ background:transparent; color:var(--text); border:1px solid #2b2f42; box-shadow:none; }
-    .btn-ghost{ background:#121420; border:1px solid #22263a; color:#cdd3e6; box-shadow:none; }
-    .hidden{ display:none; }
-    .collapsible{ margin-top:10px; }
-
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="wrap">
+  <div class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <img src="assets/logo.png" class="logo" alt="FortuneFi logo"/>
+        <span>FortuneFi</span>
+      </div>
+      <div class="nav-spacer"></div>
+      <a class="btn link" href="whitepaper.html">Whitepaper</a>
+      <a class="btn link" href="lore.html">Lore</a>
+      <a class="btn" href="#demo">Spin Wheel</a>
+    </div>
+  </div>
+
+  <header class="hero container">
+    <img src="assets/logo.png" class="logoXL" alt="FortuneFi" />
+    <h1>Dream Big. Win Bigger.</h1>
+    <p class="tag">A MemeFi Loot Game powered by $FFI, NFT Tickets & Loot Pools.</p>
+    <div class="cta-row">
+      <a class="btn" href="#demo">🎡 Try the Wheel</a>
+      <a class="btn ghost" href="whitepaper.html">📄 Read the Whitepaper</a>
+    </div>
+  </header>
+
+  <section id="demo" class="container card grid two">
     <div class="stage">
       <div class="pointer"></div>
       <canvas id="wheel" width="900" height="900" aria-label="Spin Wheel"></canvas>
     </div>
 
     <div class="panel">
-      <h1>Spin het Rad</h1>
-      <p class="muted">Klik op <b>SPIN</b> om te draaien. De <b>gouden pijl</b> bovenaan markeert de winnende sector.</p>
-      <button id="spinBtn">SPIN</button>
-      <div class="row">
-        <button id="whitepaperBtn" class="btn-secondary">WHITEPAPER</button>
-        <button id="loreBtn" class="btn-ghost">LORE</button>
-      </div>
-
-      <div id="whitepaper" class="result collapsible hidden">
-        <b>📄 Updated Whitepaper — FortuneFI ($FFI)</b><br/><br/>
-        <b>1. Abstract</b><br/>
-        FortuneFI is a MemeFi Loot Game that combines NFTs, DeFi, and meme culture into a fair, transparent ecosystem.
-        Instead of jackpots, users earn NFT Tickets that grant access to Loot Pools funded by every $FFI transaction.
-        This creates a system where anyone can play for free, collect tradable NFTs, and access community reward events — legally framed as GameFi, not gambling.
-        <br/><br/>
-        <b>2. Problem Statement</b><br/>
-        Traditional lotteries → centralization, licenses, barriers. Classic P2E → grindy, inflationary.
-        FortuneFI solves this with NFT Tickets, transparent Loot Pools, and MemeFi branding for community-driven virality.
-        <br/><br/>
-        <b>3. Solution</b><br/>
-        Free-to-Play: 1 free spin daily. Standard Tickets: buy with $FFI, access Loot Pools + boosts. Premium (Diamond): stronger odds, RWA rewards, VIP Loot Drops.
-        <br/><br/>
-        <b>4. Loot Pools</b><br/>
-        Every $FFI tx funds the treasury. Distribution: 55% Monthly / 20% Quarterly / 25% Yearly. Rewards include $FFI airdrops, NFT upgrades, RWA fractions.
-        <br/><br/>
-        <b>5. NFT Tiers</b><br/>
-        Common, Silver (+2% APY), Gold (+5% APY), Diamond (+10% APY & RWA).
-        <br/><br/>
-        <b>6. Tokenomics</b><br/>
-        Supply 1B $FFI. 30% Presale, 25% Liquidity, 20% Rewards, 10% Community, 10% Team (24m vest), 5% Marketing.
-        <br/><br/>
-        <b>7–10</b><br/>
-        Presale with ticket perks • Roadmap to staking & RWA Loot Drops • Community leaderboards/referrals/memes • Conclusion: Loot Game, not lottery.
-      </div>
-
-      <div id="lore" class="result collapsible hidden">
-        <b>Welcome, Keeper!</b><br/>
-        FortuneFi spins into existence. Tickets are being forged. Loot Pools awaken.<br/>
-        <i>Coming soon:</i> presale gates, daily spins with NFT boosts, and the first VIP Loot Drop.
-      </div>
-
+      <h2>Spin het Rad</h2>
+      <p class="muted">Klik op <b>SPIN</b> om te draaien. De gouden pointer markeert de winnende sector.</p>
+      <button id="spinBtn" class="btn" style="width:100%">SPIN</button>
       <div class="result" id="result">Nog geen resultaat.</div>
 
       <div class="legend" id="legend"></div>
       <div class="result log" id="log"></div>
 
       <p class="muted" style="margin-top:12px">
-        🔧 <b>Kansen aanpassen?</b><br/>
-        Bewerk de <code>segments</code> array (label, kleur, <i>weight</i>). Hogere <i>weight</i> = grotere kans.
+        🔧 <b>Kansen aanpassen?</b><br/>Bewerk de <code>segments</code>-array (label, kleur, <i>weight</i>).
       </p>
-      <ul>
-        <li>Front-end only (geen blockchain) – perfect voor prototype.</li>
+      <ul class="muted">
+        <li>Front-end only (geen blockchain) – ideaal voor prototype.</li>
         <li>Later: vervang RNG door <i>Chainlink VRF</i> in je smart contract.</li>
       </ul>
     </div>
-  </div>
+  </section>
+
+  <footer class="container">
+    <footer>© FortuneFi — Preview build</footer>
+  </footer>
 
   <script src="script.js"></script>
 </body>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>FortuneFi — Lore (Coming Soon)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <img src="assets/logo.png" class="logo" alt="FortuneFi logo"/>
+        <span>FortuneFi</span>
+      </div>
+      <div class="nav-spacer"></div>
+      <a class="btn link" href="index.html">Home</a>
+      <a class="btn link" href="whitepaper.html">Whitepaper</a>
+    </div>
+  </div>
+
+  <header class="hero lore container">
+    <img src="assets/logo.png" class="logoXL" alt="FortuneFi" />
+    <h1>The Lore of FortuneFi</h1>
+    <p class="tag">Coming Soon — A mythos forged from spins, tickets and Loot Pools.</p>
+    <div class="countdown" id="countdown">Loading…</div>
+  </header>
+
+  <main class="container card">
+    <h2>Teaser</h2>
+    <p class="muted">The wheels are set in motion. Tickets are minted. Loot Pools swell with every on-chain step. Chapter One lands with the presale: holders gain early perks, diamond paths unlock, and the Fortune Engine awakens.</p>
+  </main>
+
+  <footer class="container"><footer>© FortuneFi — Preview build</footer></footer>
+
+  <script>
+    // Simple countdown placeholder (to a date 30 days from now)
+    const el = document.getElementById('countdown');
+    const target = new Date(Date.now() + 30*24*60*60*1000);
+    function tick(){
+      const now = new Date();
+      let s = Math.max(0, Math.floor((target-now)/1000));
+      const d = Math.floor(s/86400); s-=d*86400;
+      const h = Math.floor(s/3600); s-=h*3600;
+      const m = Math.floor(s/60); s-=m*60;
+      el.textContent = `${d}d ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      requestAnimationFrame(tick);
+    }
+    tick();
+  </script>
+</body>
+</html>
