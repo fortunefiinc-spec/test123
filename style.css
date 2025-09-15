@@ -1,8 +1,7 @@
 :root {
   --bg:#0b0c11;
-  --panel:#12141c;
   --accent:#f6c54a;
-  --text:#e9ecf2;
+  --text:#f1f1f1;
 }
 
 * { box-sizing: border-box; }
@@ -12,48 +11,33 @@ body {
   min-height:100vh;
   display:grid;
   place-items:center;
-  background: radial-gradient(80% 80% at 50% 15%, #161a27, var(--bg));
-  color: var(--text);
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-}
-
-.wrap {
-  width: min(94vw, 980px);
-  display:grid;
-  grid-template-columns: 1fr 340px;
-  gap:28px;
-  align-items:center;
-}
-
-@media (max-width: 880px){
-  .wrap{ grid-template-columns: 1fr; }
+  background: radial-gradient(80% 80% at 50% 15%, #1c1f2b, var(--bg));
+  font-family: system-ui, sans-serif;
+  color:var(--text);
 }
 
 .stage {
-  background: linear-gradient(180deg, #0f1118 0%, #0c0e15 100%);
-  border: 1px solid #23263a;
-  border-radius:18px;
-  padding:22px;
   position:relative;
-  box-shadow: 0 12px 50px rgba(0,0,0,.45),
-              inset 0 1px 0 rgba(255,255,255,.03);
+  padding:20px;
+  border-radius:20px;
+  background:#11141d;
+  box-shadow:0 0 40px rgba(0,0,0,.6);
 }
 
 canvas {
+  display:block;
   width:100%;
   height:auto;
-  display:block;
   border-radius:12px;
 }
 
-/* Pointer als neerwaartse pijl, net boven het rad */
+/* pointer als pijl naar beneden */
 .pointer {
   position:absolute;
-  inset-inline:0;
-  top:6px;  /* deze afstand zorgt dat de punt van de pijl net tegen de rand van het wiel zit */
-  margin-inline:auto;
-  width:0;
-  height:0;
+  top:6px; /* pijl net boven het wiel */
+  left:50%;
+  transform:translateX(-50%);
+  width:0; height:0;
   border-left:18px solid transparent;
   border-right:18px solid transparent;
   border-top:28px solid var(--accent);
@@ -62,91 +46,30 @@ canvas {
 }
 
 .panel {
-  background: var(--panel);
-  border: 1px solid #232633;
-  border-radius:16px;
-  padding:18px;
-  box-shadow: 0 10px 40px rgba(0,0,0,.35),
-              inset 0 1px 0 rgba(255,255,255,.03);
-}
-
-h1 {
-  font-size:20px;
-  margin:0 0 12px;
-  letter-spacing:.2px;
-}
-
-.muted {
-  color:#b9bfd3;
-  font-size:14px;
-  margin:0 0 12px;
+  margin-top:20px;
+  text-align:center;
 }
 
 button {
-  appearance:none;
-  border:none;
   background:var(--accent);
-  color:#0d0e10;
-  padding:12px 16px;
-  border-radius:10px;
+  border:none;
+  color:#111;
   font-weight:700;
-  cursor:pointer;
-  width:100%;
-  box-shadow: 0 8px 22px rgba(246,197,74,.35);
-}
-
-button[disabled] {
-  opacity:.6;
-  cursor:not-allowed;
-}
-
-.result {
-  margin-top:12px;
-  padding:10px 12px;
+  padding:12px 20px;
   border-radius:10px;
-  background:#121420;
-  border:1px solid #22263a;
-  font-size:14px;
+  cursor:pointer;
+  box-shadow: 0 4px 12px rgba(246,197,74,.3);
+  transition: transform .15s ease, box-shadow .15s ease;
 }
 
-ul {
-  margin:8px 0 0 18px;
-  padding:0;
-  font-size:14px;
-  line-height:1.6;
-  color:#cdd3e6;
+button:hover:not([disabled]) {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(246,197,74,.45);
 }
 
-.legend {
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:12px;
-}
+button[disabled]{opacity:.5; cursor:not-allowed;}
 
-.pill {
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  background:#121420;
-  border:1px solid #22263a;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:12px;
-  color:#cdd3e6;
-}
-
-.dot {
-  width:10px;
-  height:10px;
-  border-radius:50%;
-}
-
-.log {
-  margin-top:12px;
-  max-height:140px;
-  overflow:auto;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size:12px;
-  color:#aab3cf;
+#result {
+  margin-top:10px;
+  font-size:18px;
 }
