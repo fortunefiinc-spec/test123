@@ -1,43 +1,28 @@
 <!doctype html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>FortuneFi Wheel – Demo (Enhanced)</title>
+  <title>FortuneFi – Lore</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="stage">
-    <div class="pointer" id="pointer"></div>
-
-    <div class="canvas-wrap">
-      <canvas id="wheel" width="600" height="600"></canvas>
-      <canvas id="confetti" width="600" height="600" aria-hidden="true"></canvas>
-    </div>
-
-    <div class="panel">
-      <div class="controls">
-        <button id="spinBtn">SPIN</button>
-      </div>
-
-      <div class="dashboard">
-        <div class="stat"><span class="label">Saldo</span><span class="value" id="coins">0</span></div>
-        <div class="stat"><span class="label">Spins</span><span class="value" id="spins">0</span></div>
-        <div class="stat"><span class="label">Extra</span><span class="value" id="extra">0</span></div>
-        <div class="stat"><span class="label">Jackpots</span><span class="value" id="jps">0</span></div>
-      </div>
-
-      <div id="result">Nog geen resultaat.</div>
-
-      <details class="history">
-        <summary>Laatst gewonnen</summary>
-        <ul id="historyList"></ul>
-      </details>
-    </div>
+  <div class="hero">
+    <img src="logo.png" alt="FortuneFi Logo" class="logo" />
+    <h1>FortuneFi</h1>
+    <p class="tagline">Dream Big. Win Bigger.</p>
   </div>
 
-  <div id="toast" role="status" aria-live="polite"></div>
+  <div class="wheel-container">
+    <div class="pointer"></div>
+    <canvas id="wheel" width="500" height="500"></canvas>
+  </div>
 
-  <script src="app.js"></script>
+  <div class="soon">
+    <h2>More Coming Soon</h2>
+    <p>The Loot Game begins…</p>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
