@@ -1,64 +1,32 @@
 <!doctype html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>FortuneFi — MemeFi Loot Game</title>
+  <title>FortuneFi – Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="nav">
-    <div class="container nav-inner">
-      <div class="brand">
-        <img src="assets/logo.png" class="logo" alt="FortuneFi logo"/>
-        <span>FortuneFi</span>
-      </div>
-      <div class="nav-spacer"></div>
-      <a class="btn link" href="whitepaper.html">Whitepaper</a>
-      <a class="btn link" href="lore.html">Lore</a>
-      <a class="btn" href="#demo">Spin Wheel</a>
-    </div>
-  </div>
-
-  <header class="hero container">
-    <img src="assets/logo.png" class="logoXL" alt="FortuneFi" />
-    <h1>Dream Big. Win Bigger.</h1>
-    <p class="tag">A MemeFi Loot Game powered by $FFI, NFT Tickets & Loot Pools.</p>
-    <div class="cta-row">
-      <a class="btn" href="#demo">🎡 Try the Wheel</a>
-      <a class="btn ghost" href="whitepaper.html">📄 Read the Whitepaper</a>
-    </div>
+<body class="bg">
+  <header class="hero">
+    <img src="logo.png" alt="FortuneFi Logo" class="logo" />
+    <h1 class="title">FortuneFi</h1>
+    <p class="tagline">Dream Big. Win Bigger.</p>
   </header>
 
-  <section id="demo" class="container card grid two">
-    <div class="stage">
-      <div class="pointer"></div>
-      <canvas id="wheel" width="900" height="900" aria-label="Spin Wheel"></canvas>
+  <main class="home-card">
+    <h2>🚀 Coming Soon</h2>
+    <p class="muted">
+      The MemeFi Loot Game powered by $FFI, NFT Tickets and community Loot Pools.
+      Spin for fun, collect for value. No gambling — just GameFi.
+    </p>
+    <div class="cta-row">
+      <a class="btn primary" href="tryme.html">Try Me</a>
+      <a class="btn ghost" href="whitepaper.html">Whitepaper</a>
     </div>
+  </main>
 
-    <div class="panel">
-      <h2>Spin het Rad</h2>
-      <p class="muted">Klik op <b>SPIN</b> om te draaien. De gouden pointer markeert de winnende sector.</p>
-      <button id="spinBtn" class="btn" style="width:100%">SPIN</button>
-      <div class="result" id="result">Nog geen resultaat.</div>
-
-      <div class="legend" id="legend"></div>
-      <div class="result log" id="log"></div>
-
-      <p class="muted" style="margin-top:12px">
-        🔧 <b>Kansen aanpassen?</b><br/>Bewerk de <code>segments</code>-array (label, kleur, <i>weight</i>).
-      </p>
-      <ul class="muted">
-        <li>Front-end only (geen blockchain) – ideaal voor prototype.</li>
-        <li>Later: vervang RNG door <i>Chainlink VRF</i> in je smart contract.</li>
-      </ul>
-    </div>
-  </section>
-
-  <footer class="container">
-    <footer>© FortuneFi — Preview build</footer>
+  <footer class="footer">
+    <small>© FortuneFi • Built with love by the community</small>
   </footer>
-
-  <script src="script.js"></script>
 </body>
 </html>

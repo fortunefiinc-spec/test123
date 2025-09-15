@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>FortuneFi – Try Me</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg">
+  <header class="hero small">
+    <a href="index.html" class="back">← Back</a>
+    <img src="logo.png" alt="FortuneFi Logo" class="logo sm" />
+    <h1 class="title sm">Try the Wheel</h1>
+  </header>
+
+  <main class="stage">
+    <div class="canvas-wrap">
+      <div class="pointer"></div>
+      <canvas id="wheel" width="900" height="900" aria-label="Spin Wheel"></canvas>
+      <canvas id="confetti" width="900" height="900"></canvas>
+    </div>
+    <div class="panel">
+      <button id="spinBtn" class="btn primary">SPIN</button>
+      <div id="result" class="result">Nog geen resultaat.</div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
