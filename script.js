@@ -208,7 +208,7 @@
     if(spinning) return;
     spinning = true;
     spinBtn.disabled = true;
-    resultEl.textContent = "Aan het draaien…";
+    resultEl.textContent = "Creating Your FORTUNE…";
 
     const winner = weightedChoice(segments);
     const baseTarget = angleForIndex(winner);
