@@ -1,36 +1,337 @@
 <!doctype html>
-<html lang="en">
+<html lang="nl">
 <head>
-  <meta charset="utf-8">
-  <title>FortuneFi – Spin the Wheel</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <title>FortuneFi Wheel – V1.5</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { --bg:#0b0c11; --panel:#12141c; --accent:#f6c54a; --text:#e9ecf2; }
+    * { box-sizing: border-box; }
+    body {
+      margin:0; min-height:100vh; display:grid; place-items:center;
+      background: radial-gradient(80% 80% at 50% 15%, #161a27, var(--bg));
+      color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    }
+    .wrap {
+      width: min(94vw, 980px);
+      display:grid; grid-template-columns: 1fr 340px; gap:28px; align-items:center;
+    }
+    @media (max-width: 880px){ .wrap{ grid-template-columns: 1fr; } }
+    .stage {
+      background: linear-gradient(180deg, #0f1118 0%, #0c0e15 100%);
+      border: 1px solid #23263a; border-radius:18px; padding:22px; position:relative;
+      box-shadow: 0 12px 50px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03);
+    }
+    canvas { width:100%; height:auto; display:block; border-radius:12px; }
+    .pointer {
+      position:absolute; inset-inline:0; top:-4px; margin-inline:auto; width:0; height:0;
+      border-left:18px solid transparent; border-right:18px solid transparent; border-bottom:28px solid var(--accent);
+      filter: drop-shadow(0 6px 12px rgba(246,197,74,.45)) drop-shadow(0 2px 4px rgba(0,0,0,.6));
+    }
+    .panel {
+      background: var(--panel); border: 1px solid #232633; border-radius:16px; padding:18px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03);
+    }
+    h1 { font-size:20px; margin:0 0 12px; letter-spacing:.2px; }
+    .muted { color:#b9bfd3; font-size:14px; margin:0 0 12px; }
+    button {
+      appearance:none; border:none; background:var(--accent); color:#0d0e10;
+      padding:12px 16px; border-radius:10px; font-weight:700; cursor:pointer; width:100%;
+      box-shadow: 0 8px 22px rgba(246,197,74,.35);
+    }
+    button[disabled] { opacity:.6; cursor:not-allowed; }
+    .result {
+      margin-top:12px; padding:10px 12px; border-radius:10px; background:#121420; border:1px solid #22263a; font-size:14px;
+    }
+    ul { margin:8px 0 0 18px; padding:0; font-size:14px; line-height:1.6; color:#cdd3e6; }
+    .legend { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+    .pill { display:inline-flex; align-items:center; gap:8px; background:#121420; border:1px solid #22263a; padding:6px 10px; border-radius:999px; font-size:12px; color:#cdd3e6; }
+    .dot { width:10px; height:10px; border-radius:50%; }
+    .log { margin-top:12px; max-height:140px; overflow:auto; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:12px; color:#aab3cf; }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>🎰 FortuneFi</h1>
-    <p>Spin the wheel, test your luck, and earn rewards!</p>
-  </header>
-
-  <main class="wrap">
+  <div class="wrap">
     <div class="stage">
       <div class="pointer"></div>
-      <canvas id="wheel" width="900" height="900"></canvas>
+      <canvas id="wheel" width="900" height="900" aria-label="Spin Wheel"></canvas>
     </div>
 
     <div class="panel">
-      <h2>Spin the Wheel</h2>
+      <h1>Spin het Rad</h1>
+      <p class="muted">Klik op <b>SPIN</b> om te draaien. De gouden pointer markeert de winnende sector.</p>
       <button id="spinBtn">SPIN</button>
-      <div class="result" id="result">No result yet.</div>
+      <div class="result" id="result">Nog geen resultaat.</div>
+
       <div class="legend" id="legend"></div>
-      <div class="log" id="log"></div>
+
+      <div class="result log" id="log"></div>
+
+      <p class="muted" style="margin-top:12px">
+        🔧 <b>Kansen aanpassen?</b><br/>
+        Bewerk de <code>segments</code> array (label, kleur, <i>weight</i>). Hogere <i>weight</i> = grotere kans.
+      </p>
+      <ul>
+        <li>Front-end only (geen blockchain) – perfect voor prototype.</li>
+        <li>Later: vervang RNG door <i>Chainlink VRF</i> in je smart contract.</li>
+      </ul>
     </div>
-  </main>
+  </div>
 
-  <footer>
-    <p>© 2025 FortuneFi – All Rights Reserved</p>
-  </footer>
+  <script>
+    // === CONFIG ===
+    const segments = [
+      { label: '10 Coins',  color: '#f6c54a', weight: 10 },
+      { label: 'Extra Spin',color: '#ff944a', weight: 8  },
+      { label: 'Try Again', color: '#ff7ab6', weight: 16 },
+      { label: '20 Coins',  color: '#f6c54a', weight: 7  },
+      { label: 'Common NFT',color: '#c08bff', weight: 5  },
+      { label: '50 Coins',  color: '#ffb86b', weight: 3  },
+      { label: 'Rare NFT',  color: '#7aa2ff', weight: 2  },
+      { label: 'Jackpot!',  color: '#ff5e5b', weight: 1  },
+    ];
 
-  <script src="script.js"></script>
+    // === BASIS ===
+    const canvas = document.getElementById('wheel');
+    const ctx = canvas.getContext('2d');
+    const spinBtn = document.getElementById('spinBtn');
+    const resultEl = document.getElementById('result');
+    const logEl = document.getElementById('log');
+    const legendEl = document.getElementById('legend');
+
+    // Logo (plaats logo.png naast dit bestand)
+    const logo = new Image();
+    logo.src = 'logo.png';
+
+    // Legenda pills
+    function renderLegend() {
+      legendEl.innerHTML = '';
+      segments.forEach(s => {
+        const pill = document.createElement('div');
+        pill.className = 'pill';
+        pill.innerHTML = `<span class="dot" style="background:${s.color}"></span>${s.label} <span style="opacity:.7">(${s.weight})</span>`;
+        legendEl.appendChild(pill);
+      });
+    }
+    renderLegend();
+
+    const size = Math.min(canvas.width, canvas.height);
+    const radius = size * 0.44;          // iets kleiner om ring/lampjes te tonen
+    const center = { x: canvas.width/2, y: canvas.height/2 };
+    let currentAngle = 0;
+    const sliceAngle = (Math.PI * 2) / segments.length;
+
+    // Tekent het wiel met FortuneFi-stijl
+    function drawWheel() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.save();
+      ctx.translate(center.x, center.y);
+      ctx.rotate(currentAngle);
+
+      // --- Buitenste gouden ring ---
+      ctx.beginPath();
+      ctx.arc(0, 0, radius + 18, 0, Math.PI * 2);
+      ctx.lineWidth = 14;
+      const ringGrad = ctx.createLinearGradient(-radius, -radius, radius, radius);
+      ringGrad.addColorStop(0, '#fbe08a');
+      ringGrad.addColorStop(0.5, '#f6c54a');
+      ringGrad.addColorStop(1, '#d9a32f');
+      ctx.strokeStyle = ringGrad;
+      ctx.stroke();
+
+      // --- “Lampjes” rond de ring ---
+      const bulbs = 60;
+      for (let i = 0; i < bulbs; i++) {
+        const a = (i / bulbs) * Math.PI * 2;
+        const r = radius + 18;
+        const x = Math.cos(a) * r;
+        const y = Math.sin(a) * r;
+        const g = ctx.createRadialGradient(x, y, 1, x, y, 6);
+        g.addColorStop(0, 'rgba(255,255,200,0.95)');
+        g.addColorStop(1, 'rgba(255,215,100,0.05)');
+        ctx.beginPath();
+        ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+        ctx.fillStyle = g;
+        ctx.fill();
+      }
+
+      // --- Slices met radiale glans + zwarte separators ---
+      for (let i = 0; i < segments.length; i++) {
+        const seg = segments[i];
+        const start = i * sliceAngle;
+        const end = start + sliceAngle;
+
+        // Sector
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, radius, start, end);
+        ctx.closePath();
+
+        const grad = ctx.createRadialGradient(0, 0, radius * 0.05, 0, 0, radius);
+        // subtiele “sheen”
+        grad.addColorStop(0, '#ffffff10');
+        grad.addColorStop(0.25, seg.color);
+        grad.addColorStop(1, shade(seg.color, -18));
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // Separator stroke
+        ctx.strokeStyle = 'rgba(0,0,0,.55)';
+        ctx.lineWidth = 2.2;
+        ctx.stroke();
+
+        // Label
+        ctx.save();
+        ctx.rotate(start + sliceAngle / 2);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#0f1014';
+        ctx.font = `${Math.floor(radius * 0.09)}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
+        ctx.translate(radius * 0.9, 0);
+        wrapText(ctx, seg.label, 0, 0, radius * 0.38, radius * 0.09);
+        ctx.restore();
+      }
+
+      // --- Binnenste hub met gouden rand ---
+      ctx.beginPath();
+      ctx.arc(0, 0, radius * 0.18, 0, Math.PI * 2);
+      const hubGrad = ctx.createLinearGradient(-20, -20, 20, 20);
+      hubGrad.addColorStop(0, '#0e1016');
+      hubGrad.addColorStop(1, '#0a0c12');
+      ctx.fillStyle = hubGrad;
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(0, 0, radius * 0.18 + 6, 0, Math.PI * 2);
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = ringGrad;
+      ctx.stroke();
+
+      // --- Logo in het midden ---
+      if (logo && logo.complete) {
+        const s = radius * 0.24; // schaal logo t.o.v. rad
+        ctx.save();
+        // zachte glow onder logo
+        ctx.globalAlpha = 0.22;
+        ctx.beginPath();
+        ctx.arc(0, 0, s * 0.75, 0, Math.PI * 2);
+        ctx.fillStyle = '#000';
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        ctx.drawImage(logo, -s/2, -s/2, s, s);
+        ctx.restore();
+      }
+
+      ctx.restore();
+    }
+
+    // Tekst wrapping
+    function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+      const words = text.split(' ');
+      let line = '';
+      const lines = [];
+      for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + ' ';
+        if (ctx.measureText(testLine).width > maxWidth && n > 0) {
+          lines.push(line.trim());
+          line = words[n] + ' ';
+        } else line = testLine;
+      }
+      lines.push(line.trim());
+      const totalH = lines.length * lineHeight;
+      let yy = y - totalH/2 + lineHeight*0.85;
+      lines.forEach(l => { ctx.fillText(l, x, yy); yy += lineHeight; });
+    }
+
+    // Kleur shading helper (hex naar donkerder)
+    function shade(hex, pct){
+      // simpele hex shade (pct -100..100)
+      const m = hex.match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
+      if(!m) return hex;
+      let [r,g,b] = [parseInt(m[1],16), parseInt(m[2],16), parseInt(m[3],16)];
+      r = Math.min(255, Math.max(0, r + Math.round(255 * (pct/100))));
+      g = Math.min(255, Math.max(0, g + Math.round(255 * (pct/100))));
+      b = Math.min(255, Math.max(0, b + Math.round(255 * (pct/100))));
+      return `rgb(${r},${g},${b})`;
+    }
+
+    // Gewogen random keuze
+    function weightedChoice(items, weightKey = 'weight') {
+      const total = items.reduce((acc, it) => acc + (it[weightKey] || 0), 0);
+      let r = Math.random() * total;
+      for (let i = 0; i < items.length; i++) {
+        r -= (items[i][weightKey] || 0);
+        if (r <= 0) return i;
+      }
+      return items.length - 1;
+    }
+
+    // Doelhoek zodat gekozen index onder pointer eindigt
+    function angleForIndex(index) {
+      const targetSliceMid = index * sliceAngle + sliceAngle / 2;
+      return (Math.PI * 2 - targetSliceMid) % (Math.PI * 2);
+    }
+
+    let spinning = false;
+
+    function spin() {
+      if (spinning) return;
+      spinning = true;
+      spinBtn.disabled = true;
+      resultEl.textContent = 'Aan het draaien…';
+
+      const winnerIndex = weightedChoice(segments);
+      const baseTarget = angleForIndex(winnerIndex);
+      const extraTurns = 4 + Math.floor(Math.random() * 3); // 4..6 rondjes
+      const targetAngle = baseTarget + extraTurns * Math.PI * 2;
+
+      const startAngle = currentAngle % (Math.PI * 2);
+      const delta = shortestRotation(startAngle, targetAngle);
+
+      const duration = 3800 + Math.random() * 900; // ms
+      const start = performance.now();
+
+      function frame(now) {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = easeOutCubic(t);
+        currentAngle = startAngle + delta * eased;
+        drawWheel();
+
+        if (t < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          currentAngle = targetAngle % (Math.PI * 2);
+          drawWheel();
+
+          const win = segments[winnerIndex];
+          resultEl.innerHTML = `🎉 <b>Gewonnen:</b> ${win.label}`;
+          appendLog(`[${new Date().toLocaleTimeString()}] WIN → ${win.label}`);
+          spinning = false;
+          spinBtn.disabled = false;
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function shortestRotation(from, to) {
+      let delta = to - from;
+      while (delta <= 0) delta += Math.PI * 2;
+      return delta;
+    }
+    function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+
+    function appendLog(line) {
+      const el = document.createElement('div');
+      el.textContent = line;
+      logEl.prepend(el);
+    }
+
+    // Init
+    drawWheel();
+    spinBtn.addEventListener('click', spin);
+
+    // Optioneel: redraw bij logo-load
+    logo.addEventListener('load', drawWheel);
+  </script>
 </body>
 </html>
