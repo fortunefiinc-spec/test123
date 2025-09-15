@@ -1,52 +1,43 @@
 <!doctype html>
 <html lang="nl">
 <head>
-<meta charset="utf-8" />
-<title>FortuneFi Wheel – Enhanced</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8" />
+  <title>FortuneFi Wheel – Demo (Enhanced)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<div class="stage">
-<div class="pointer" id="pointer"></div>
+  <div class="stage">
+    <div class="pointer" id="pointer"></div>
 
+    <div class="canvas-wrap">
+      <canvas id="wheel" width="600" height="600"></canvas>
+      <canvas id="confetti" width="600" height="600" aria-hidden="true"></canvas>
+    </div>
 
-<!-- Wheel + confetti stacked -->
-<div class="canvas-wrap">
-<canvas id="wheel" width="600" height="600" aria-label="Fortune wheel"></canvas>
-<canvas id="confetti" width="600" height="600" aria-hidden="true"></canvas>
-</div>
+    <div class="panel">
+      <div class="controls">
+        <button id="spinBtn">SPIN</button>
+      </div>
 
+      <div class="dashboard">
+        <div class="stat"><span class="label">Saldo</span><span class="value" id="coins">0</span></div>
+        <div class="stat"><span class="label">Spins</span><span class="value" id="spins">0</span></div>
+        <div class="stat"><span class="label">Extra</span><span class="value" id="extra">0</span></div>
+        <div class="stat"><span class="label">Jackpots</span><span class="value" id="jps">0</span></div>
+      </div>
 
-<div class="panel">
-<div class="controls">
-<button id="spinBtn" class="primary">SPIN</button>
-<button id="autoBtn" class="ghost" title="Spatiebalk = Spin">Auto x10</button>
-</div>
+      <div id="result">Nog geen resultaat.</div>
 
+      <details class="history">
+        <summary>Laatst gewonnen</summary>
+        <ul id="historyList"></ul>
+      </details>
+    </div>
+  </div>
 
-<div class="dashboard">
-<div class="stat"><span class="label">Saldo</span><span class="value" id="coins">0</span></div>
-<div class="stat"><span class="label">Spins</span><span class="value" id="spins">0</span></div>
-<div class="stat"><span class="label">Extra spins</span><span class="value" id="extra">0</span></div>
-<div class="stat"><span class="label">Jackpots</span><span class="value" id="jps">0</span></div>
-</div>
+  <div id="toast" role="status" aria-live="polite"></div>
 
-
-<div id="result" class="result">Nog geen resultaat.</div>
-
-
-<details class="history">
-<summary>Laatst gewonnen</summary>
-<ul id="historyList"></ul>
-</details>
-</div>
-</div>
-
-
-<div id="toast" role="status" aria-live="polite"></div>
-
-
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
