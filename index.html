@@ -1,171 +1,34 @@
 <!doctype html>
-<html lang="nl">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>FortuneFi — MemeFi Loot Game</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8">
+  <title>FortuneFi – Spin the Wheel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- HERO / WELCOME -->
-  <header class="hero container">
-    <div class="brand">
-      <img src="assets/logo.png" alt="FortuneFi logo" class="logo" />
-      <h1>FortuneFi</h1>
-      <p class="tagline">📄 Updated Whitepaper — $FFI</p>
-      <p class="sub">A MemeFi Loot Game powered by NFT Tickets, Loot Pools and community culture.</p>
-      <div class="cta-row">
-        <a href="#demo" class="btn">🎡 Try the Wheel</a>
-        <a href="#whitepaper" class="btn ghost">Read the Preview</a>
-      </div>
-    </div>
+  <header>
+    <h1>🎰 FortuneFi</h1>
+    <p>Spin the wheel, test your luck, and earn rewards!</p>
   </header>
 
-  <!-- DEMO WHEEL -->
-  <section id="demo" class="container card two-col">
+  <main class="wrap">
     <div class="stage">
       <div class="pointer"></div>
-      <canvas id="wheel" width="900" height="900" aria-label="Spin Wheel"></canvas>
+      <canvas id="wheel" width="900" height="900"></canvas>
     </div>
 
     <div class="panel">
-      <h2>Spin het Rad</h2>
-      <p class="muted">Klik op <b>SPIN</b> om te draaien. De gouden pointer markeert de winnende sector.</p>
-      <button id="spinBtn" class="btn full">SPIN</button>
-      <div class="result" id="result">Nog geen resultaat.</div>
-
+      <h2>Spin the Wheel</h2>
+      <button id="spinBtn">SPIN</button>
+      <div class="result" id="result">No result yet.</div>
       <div class="legend" id="legend"></div>
-
-      <div class="result log" id="log"></div>
-
-      <p class="muted" style="margin-top:12px">
-        🔧 <b>Kansen aanpassen?</b><br/>
-        Bewerk de <code>segments</code>-array (label, kleur, <i>weight</i>). Hogere <i>weight</i> = grotere kans.
-      </p>
-      <ul class="muted bullets">
-        <li>Front-end only (geen blockchain) – ideaal voor prototype.</li>
-        <li>Later: vervang RNG door <i>Chainlink VRF</i> in je smart contract.</li>
-      </ul>
+      <div class="log" id="log"></div>
     </div>
-  </section>
+  </main>
 
-  <!-- WHITEPAPER PREVIEW -->
-  <section id="whitepaper" class="container card">
-    <h2>Whitepaper Preview</h2>
-
-    <details open>
-      <summary>1. Abstract</summary>
-      <p>FortuneFI is a MemeFi Loot Game that combines NFTs, DeFi, and meme culture into a fair, transparent ecosystem.
-      Instead of jackpots, users earn NFT Tickets that grant access to Loot Pools funded by every $FFI transaction.
-      Anyone can play for free, collect tradable NFTs, and access community reward events — legally framed as GameFi, not gambling.</p>
-    </details>
-
-    <details>
-      <summary>2. Problem Statement</summary>
-      <ul>
-        <li>Traditional lotteries → centralization, licenses, barriers.</li>
-        <li>Classic P2E → grindy, inflationary.</li>
-      </ul>
-      <p>FortuneFI solves this with:</p>
-      <ul>
-        <li><b>NFT Tickets</b> (collectible & tradable)</li>
-        <li><b>Loot Pools</b> (transparent & growing with every transaction)</li>
-        <li><b>MemeFi branding</b> (community-driven virality)</li>
-      </ul>
-    </details>
-
-    <details>
-      <summary>3. Solution</summary>
-      <div class="cols">
-        <div>
-          <h4>Free-to-Play</h4>
-          <ul><li>1 free spin daily</li><li>Rewards: $FFI, Common NFTs, extra spins</li></ul>
-        </div>
-        <div>
-          <h4>Standard Tickets</h4>
-          <ul><li>Buy with $FFI</li><li>Common/Silver/Gold tiers</li><li>Access to Loot Pools + staking boosts</li></ul>
-        </div>
-        <div>
-          <h4>Premium Tickets</h4>
-          <ul><li>Diamond only with $FFI</li><li>Bigger odds + stronger boosts + RWA rewards</li><li>VIP Loot Drop events</li></ul>
-        </div>
-      </div>
-    </details>
-
-    <details>
-      <summary>4. Loot Pools</summary>
-      <p>Every $FFI transaction funds the community treasury.</p>
-      <ul>
-        <li>55% Monthly</li>
-        <li>20% Quarterly</li>
-        <li>25% Yearly</li>
-      </ul>
-      <p>Rewards: $FFI airdrops, NFT upgrades, RWA fractions. Framed as Loot Drops, not jackpots.</p>
-    </details>
-
-    <details>
-      <summary>5. NFT Tiers</summary>
-      <table class="table">
-        <thead><tr><th>Tier</th><th>Utility</th></tr></thead>
-        <tbody>
-          <tr><td>Common</td><td>1 free spin/day, small $FFI rewards</td></tr>
-          <tr><td>Silver</td><td>Bonus spins, monthly Loot Pool access, +2% staking APY</td></tr>
-          <tr><td>Gold</td><td>Premium spins, stronger monthly pool access, +5% staking APY</td></tr>
-          <tr><td>Diamond</td><td>Monthly/quarterly/yearly pools, RWA rewards, +10% staking APY</td></tr>
-        </tbody>
-      </table>
-    </details>
-
-    <details>
-      <summary>6. Tokenomics</summary>
-      <ul class="grid-two">
-        <li><b>Supply:</b> 1B $FFI</li>
-        <li><b>Allocation:</b></li>
-      </ul>
-      <ul class="bullets tight">
-        <li>30% Presale</li>
-        <li>25% Liquidity</li>
-        <li>20% Loot Pools & Rewards</li>
-        <li>10% Community Incentives</li>
-        <li>10% Team (vesting 24 mo)</li>
-        <li>5% Marketing</li>
-      </ul>
-    </details>
-
-    <details>
-      <summary>7. Presale</summary>
-      <p>Whitelist → Presale rounds (Seed / Private / Public).</p>
-      <ul>
-        <li>Seed = Gold Ticket</li>
-        <li>Private = Silver Ticket</li>
-        <li>Public = Common Ticket</li>
-      </ul>
-      <p>Presale tx-ids = Founders Wheel entries (extra NFT rewards).</p>
-    </details>
-
-    <details>
-      <summary>8. Roadmap</summary>
-      <ol>
-        <li>Presale, NFT Tickets mint, Loot Pool contract launch</li>
-        <li>Daily spin + staking with NFT boosts</li>
-        <li>RWA-backed Loot Drops</li>
-        <li>CEX listings + MemeFi viral expansion</li>
-      </ol>
-    </details>
-
-    <details>
-      <summary>9. Community</summary>
-      <ul><li>Leaderboards: Lucky winners & meme lords</li><li>Referral rewards</li><li>Meme contests with NFT prizes</li></ul>
-    </details>
-
-    <details>
-      <summary>10. Conclusion</summary>
-      <p>FortuneFI is not a lottery. It’s a community Loot Game powered by $FFI, NFT Tickets, and meme culture. Every on-chain transaction fuels growth, every NFT adds value, and every player has a chance to Dream Big & Win Bigger.</p>
-    </details>
-  </section>
-
-  <footer class="container foot">
-    <span>© FortuneFi — Preview build</span>
+  <footer>
+    <p>© 2025 FortuneFi – All Rights Reserved</p>
   </footer>
 
   <script src="script.js"></script>
