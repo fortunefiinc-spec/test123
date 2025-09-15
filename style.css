@@ -1,9 +1,6 @@
 :root {
   --bg: #0b0c11;
   --accent: #f6c54a;
-  --red: #f65c4a;
-  --orange: #ff944a;
-  --yellow: #f6c54a;
   --text: #f1f1f1;
 }
 
@@ -15,7 +12,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
   min-height: 100vh;
   text-align: center;
 }
@@ -55,6 +51,31 @@ canvas {
   border-right: 20px solid transparent;
   border-top: 30px solid var(--accent);
   filter: drop-shadow(0 4px 6px rgba(0,0,0,.6));
+}
+
+.panel {
+  margin-top: 20px;
+}
+
+button {
+  background: var(--accent);
+  border: none;
+  color: #111;
+  font-weight: 700;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(246,197,74,.35);
+}
+
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#result {
+  margin-top: 12px;
+  font-size: 18px;
 }
 
 .soon {
