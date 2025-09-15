@@ -1,36 +1,38 @@
 <!doctype html>
-<html lang="en">
+<html lang="nl">
 <head>
-  <meta charset="utf-8">
-  <title>FortuneFi – Spin the Wheel</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <title>FortuneFi Wheel – V1.5</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>🎰 FortuneFi</h1>
-    <p>Spin the wheel, test your luck, and earn rewards!</p>
-  </header>
-
-  <main class="wrap">
+  <div class="wrap">
     <div class="stage">
       <div class="pointer"></div>
-      <canvas id="wheel" width="900" height="900"></canvas>
+      <canvas id="wheel" width="900" height="900" aria-label="Spin Wheel"></canvas>
     </div>
 
     <div class="panel">
-      <h2>Spin the Wheel</h2>
+      <h1>Spin het Rad</h1>
+      <p class="muted">Klik op <b>SPIN</b> om te draaien. De gouden pointer markeert de winnende sector.</p>
       <button id="spinBtn">SPIN</button>
-      <div class="result" id="result">No result yet.</div>
+      <div class="result" id="result">Nog geen resultaat.</div>
+
       <div class="legend" id="legend"></div>
-      <div class="log" id="log"></div>
+
+      <div class="result log" id="log"></div>
+
+      <p class="muted" style="margin-top:12px">
+        🔧 <b>Kansen aanpassen?</b><br/>
+        Bewerk de <code>segments</code> array in <code>script.js</code> (label, kleur, <i>weight</i>). Hogere <i>weight</i> = grotere kans.
+      </p>
+      <ul>
+        <li>Front-end only (geen blockchain) – perfect voor prototype.</li>
+        <li>Later: vervang RNG door <i>Chainlink VRF</i> in je smart contract.</li>
+      </ul>
     </div>
-  </main>
-
-  <footer>
-    <p>© 2025 FortuneFi – All Rights Reserved</p>
-  </footer>
-
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
