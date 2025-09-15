@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="nl">
 <head>
   <meta charset="utf-8" />
-  <title>FortuneFi – Spin Wheel V1</title>
+  <title>FortuneFi Wheel – V1.5</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css">
 </head>
@@ -11,23 +11,26 @@
     <div class="stage">
       <div class="pointer"></div>
       <canvas id="wheel" width="900" height="900" aria-label="Spin Wheel"></canvas>
-      <!-- FortuneFi Logo placeholder -->
-      <img src="logo.png" alt="FortuneFi Logo" class="logo-overlay">
     </div>
 
     <div class="panel">
       <h1>Spin het Rad</h1>
-      <p class="muted">Klik op <b>SPIN</b> om te draaien. De pointer bovenaan markeert de winnende sector.</p>
+      <p class="muted">Klik op <b>SPIN</b> om te draaien. De gouden pointer markeert de winnende sector.</p>
       <button id="spinBtn">SPIN</button>
       <div class="result" id="result">Nog geen resultaat.</div>
 
       <div class="legend" id="legend"></div>
+
       <div class="result log" id="log"></div>
 
       <p class="muted" style="margin-top:12px">
-        🔧 <b>Hoe pas je kansen aan?</b><br/>
+        🔧 <b>Kansen aanpassen?</b><br/>
         Bewerk de <code>segments</code> array in <code>script.js</code> (label, kleur, <i>weight</i>). Hogere <i>weight</i> = grotere kans.
       </p>
+      <ul>
+        <li>Front-end only (geen blockchain) – perfect voor prototype.</li>
+        <li>Later: vervang RNG door <i>Chainlink VRF</i> in je smart contract.</li>
+      </ul>
     </div>
   </div>
   <script src="script.js"></script>
