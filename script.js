@@ -11,10 +11,10 @@
   const conf = cfx.getContext('2d');
 
   const segments = [
-    {label:"10 Coins",  color:"#f6c54a", weight:10},
+    {label:"10 $FFI",  color:"#f6c54a", weight:10},
     {label:"Extra Spin",color:"#ff944a", weight:8},
-    {label:"20 Coins",  color:"#f6c54a", weight:7},
-    {label:"50 Coins",  color:"#ff944a", weight:3},
+    {label:"20 $FFI",  color:"#f6c54a", weight:7},
+    {label:"50 $FFI",  color:"#ff944a", weight:3},
     {label:"Jackpot!",  color:"#f65c4a", weight:1}
   ];
 
@@ -230,7 +230,7 @@
         currentAngle = target % (Math.PI*2);
         drawWheel();
         const win = segments[winner];
-        resultEl.textContent = "🎉 Gewonnen: " + win.label;
+        resultEl.textContent = "🎉 YOU HAVE WON!: " + win.label;
         winChord();
         spawnConfetti(); tickConfetti();
         spinning = false; spinBtn.disabled = false;
