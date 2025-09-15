@@ -1,3 +1,4 @@
+// === CONFIG ===
 const segments = [
   { label: '10 Coins',  color: '#33e1c6', weight: 10 },
   { label: 'Extra Spin',color: '#7aa2ff', weight: 8  },
@@ -16,16 +17,12 @@ const resultEl = document.getElementById('result');
 const logEl = document.getElementById('log');
 const legendEl = document.getElementById('legend');
 
-function pct(n, total) { return ((n/total)*100).toFixed(1) + '%'; }
 function renderLegend() {
   legendEl.innerHTML = '';
-  const total = segments.reduce((a,s)=>a+(s.weight||0),0);
   segments.forEach(s => {
     const pill = document.createElement('div');
     pill.className = 'pill';
-    pill.innerHTML =
-      `<span style="background:${s.color}; width:10px; height:10px; border-radius:50%; display:inline-block;"></span>
-       ${s.label} <span style="opacity:.7">(${s.weight} • ${pct(s.weight,total)})</span>`;
+    pill.innerHTML = `<span class="dot" style="background:${s.color}"></span>${s.label} <span style="opacity:.7">(${s.weight})</span>`;
     legendEl.appendChild(pill);
   });
 }
@@ -42,6 +39,7 @@ function drawWheel() {
   ctx.save();
   ctx.translate(center.x, center.y);
   ctx.rotate(currentAngle);
+
   for (let i=0; i<segments.length; i++) {
     const seg = segments[i];
     const start = i * sliceAngle;
@@ -53,6 +51,7 @@ function drawWheel() {
     ctx.fillStyle = seg.color;
     ctx.fill();
     ctx.strokeStyle = 'rgba(0,0,0,.25)';
+    ctx.lineWidth = 2;
     ctx.stroke();
     ctx.save();
     ctx.rotate(start + sliceAngle/2);
@@ -71,16 +70,18 @@ function weightedChoice(items) {
   const total = items.reduce((acc, it) => acc + (it.weight || 0), 0);
   let r = Math.random() * total;
   for (let i=0; i<items.length; i++) {
-    r -= items[i].weight;
+    r -= (items[i].weight || 0);
     if (r <= 0) return i;
   }
   return items.length-1;
 }
+
 function angleForIndex(index) {
   const targetSliceStart = index * sliceAngle;
   const targetSliceMid = targetSliceStart + sliceAngle/2;
   return (Math.PI * 2 - targetSliceMid) % (Math.PI*2);
 }
+
 function shortestRotation(from,to){ let delta=to-from; while(delta<=0) delta+=Math.PI*2; return delta; }
 function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
 function appendLog(line){ const el=document.createElement('div'); el.textContent=line; logEl.prepend(el); }
@@ -90,7 +91,7 @@ function spin() {
   if(spinning) return;
   spinning = true;
   spinBtn.disabled=true;
-  resultEl.textContent='Spinning...';
+  resultEl.textContent='Aan het draaien…';
   const winnerIndex = weightedChoice(segments);
   const baseTarget = angleForIndex(winnerIndex);
   const extraTurns = 4 + Math.floor(Math.random()*3);
@@ -110,7 +111,7 @@ function spin() {
       currentAngle = targetAngle % (Math.PI*2);
       drawWheel();
       const win = segments[winnerIndex];
-      resultEl.innerHTML = `🎉 <b>Won:</b> ${win.label}`;
+      resultEl.innerHTML = `🎉 <b>Gewonnen:</b> ${win.label}`;
       appendLog(`[${new Date().toLocaleTimeString()}] WIN → ${win.label}`);
       spinning=false; spinBtn.disabled=false;
     }
