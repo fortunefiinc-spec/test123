@@ -98,4 +98,17 @@ canvas { display:block; width:100%; height:auto; border-radius:14px; }
 .telegram-icon {
   display: inline-block;
   background: #229ED9; /* Telegram blauw */
-  bo
+  border-radius: 50%;
+  padding: 1px; /* kleiner */
+  box-shadow: 0 0 10px rgba(34,158,217,0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.telegram-icon img {
+  width: 22px;  /* icoon */
+  height: 22px;
+  display: block;
+}
+.telegram-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(34,158,217,0.9);
+}
