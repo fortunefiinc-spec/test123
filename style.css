@@ -99,7 +99,7 @@ canvas { display:block; width:100%; height:auto; border-radius:14px; }
   display: inline-block;
   background: #229ED9; /* Telegram blauw */
   border-radius: 50%;
-  padding: 1px; /* kleiner */
+  padding: 8px; /* kleiner */
   box-shadow: 0 0 10px rgba(34,158,217,0.6);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
