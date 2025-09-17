@@ -90,17 +90,18 @@ canvas { display:block; width:100%; height:auto; border-radius:14px; }
 .table thead { background:#151827; }
 
 /* TELEGRAM ICON */
+.socials {
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+}
 .telegram-icon {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
   display: inline-block;
   background: #229ED9; /* Telegram blauw */
   border-radius: 50%;
   padding: 12px;
   box-shadow: 0 0 20px rgba(34,158,217,0.6);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  z-index: 9999;
 }
 .telegram-icon img {
   width: 28px;
