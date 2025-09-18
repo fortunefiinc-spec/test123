@@ -34,73 +34,13 @@
   const logo = new Image();
   logo.src = "logo.png";
 
-  // === AUDIO ===
-  let audioCtx;
-  function ensureAudio(){
-    if(!audioCtx){
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-  }
-  function ping(freq=900, dur=0.03, gain=0.06){
-    if(!audioCtx) return;
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type = 'square';
-    o.frequency.value = freq + (Math.random()*60-30);
-    g.gain.value = gain;
-    o.connect(g); g.connect(audioCtx.destination);
-    o.start();
-    setTimeout(()=>{ o.stop(); }, dur*1000);
-  }
-  function winChord(){
-    const seq = [880, 1175, 1568];
-    seq.forEach((f,i)=> setTimeout(()=> ping(f, 0.06, 0.08), i*90));
-  }
-
-  // === CONFETTI ===
-  let confetti = [];
-  function spawnConfetti(n=120){
-    confetti.length = 0;
-    for(let i=0;i<n;i++){
-      confetti.push({
-        x: Math.random()*cfx.width,
-        y: -20 - Math.random()*60,
-        vx: (Math.random()-.5)*2,
-        vy: 2+Math.random()*2.5,
-        a: Math.random()*Math.PI*2,
-        va: (Math.random()-.5)*0.3,
-        w: 6+Math.random()*6,
-        h: 10+Math.random()*12,
-        col: ['#f6c54a','#ff944a','#f65c4a','#7aa2ff','#c08bff'][Math.floor(Math.random()*5)]
-      });
-    }
-  }
-  function tickConfetti(){
-    conf.clearRect(0,0,cfx.width,cfx.height);
-    conf.save();
-    confetti.forEach(p=>{
-      p.x+=p.vx; p.y+=p.vy; p.a+=p.va;
-      if(p.y < cfx.height+30){
-        conf.save();
-        conf.translate(p.x, p.y);
-        conf.rotate(p.a);
-        conf.fillStyle = p.col;
-        conf.fillRect(-p.w/2,-p.h/2,p.w,p.h);
-        conf.restore();
-      }
-    });
-    conf.restore();
-    confetti = confetti.filter(p=> p.y < cfx.height+30);
-    if(confetti.length) requestAnimationFrame(tickConfetti);
-  }
-
-  // === UI update ===
+  // UI update
   function updateSpinUI(){
-    spinBtn.disabled = (spins <= 0 || spinning);
+    spinBtn.disabled = (spins <= 0);
     spinCountEl.textContent = `Spins left: ${spins}`;
   }
 
-  // === RNG helpers ===
+  // RNG helpers
   function weightedChoice(items){
     const total = items.reduce((a,b)=>a+(b.weight||0),0);
     let r = Math.random()*total;
@@ -118,9 +58,8 @@
   }
   function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
 
-  // === SPIN functie ===
+  // SPIN functie
   function spin(){
-    ensureAudio();
     if(spinning || spins <= 0) return;
     spinning = true;
     spins--; // gebruik spin
@@ -143,7 +82,6 @@
       const eased = easeOutCubic(t);
       currentAngle = startAngle + delta*eased;
       drawWheel();
-      ping(600 + Math.random()*200, 0.02, 0.03); // tik-geluid
       if(t<1){ requestAnimationFrame(frame); }
       else {
         currentAngle = target % (Math.PI*2);
@@ -158,24 +96,20 @@
           resultEl.textContent += " (+1 spin)";
         }
 
-        // 🎶 + 🎉
-        winChord();
-        spawnConfetti(); tickConfetti();
-
         updateSpinUI();
       }
     }
     requestAnimationFrame(frame);
   }
 
-  // === PowerUp ===
+  // PowerUp
   function powerUp(){
     spins++;
     updateSpinUI();
     resultEl.textContent = "⚡ Power Up activated! +1 Spin";
   }
 
-  // === DRAW WHEEL (originele versie) ===
+  // ---- DRAW WHEEL (originele versie teruggezet) ----
   function drawWheel(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     ctx.save();
