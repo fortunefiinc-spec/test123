@@ -12,7 +12,7 @@
   const cfx = document.getElementById('confetti');
   const conf = cfx.getContext('2d');
 
-  let spins = 1; // start met 1 spin
+  let spins = 1; // startwaarde
   updateSpinUI();
 
   const segments = [
@@ -34,9 +34,8 @@
   const logo = new Image();
   logo.src = "logo.png";
 
-  // update UI (knop + counter)
+  // UI update
   function updateSpinUI(){
-    spinBtn.textContent = `SPIN`;
     spinBtn.disabled = (spins <= 0);
     spinCountEl.textContent = `Spins left: ${spins}`;
   }
@@ -63,7 +62,7 @@
   function spin(){
     if(spinning || spins <= 0) return;
     spinning = true;
-    spins--; // gebruik 1 spin
+    spins--; // gebruik spin
     updateSpinUI();
 
     resultEl.textContent = "Creating Your FORTUNE…";
@@ -103,21 +102,107 @@
     requestAnimationFrame(frame);
   }
 
-  // Power Up
+  // PowerUp
   function powerUp(){
     spins++;
     updateSpinUI();
     resultEl.textContent = "⚡ Power Up activated! +1 Spin";
   }
 
-  // teken wiel (rest code blijft gelijk)
+  // ---- DRAW WHEEL (originele versie teruggezet) ----
   function drawWheel(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     ctx.save();
     ctx.translate(center.x, center.y);
     ctx.rotate(currentAngle);
-    // … rest van je teken-code …
+
+    // ring
+    ctx.beginPath();
+    ctx.arc(0,0, radius+16, 0, Math.PI*2);
+    ctx.lineWidth = 14;
+    const ringGrad = ctx.createLinearGradient(-radius, -radius, radius, radius);
+    ringGrad.addColorStop(0, '#fbe08a');
+    ringGrad.addColorStop(0.5, '#f6c54a');
+    ringGrad.addColorStop(1, '#d19a2a');
+    ctx.strokeStyle = ringGrad;
+    ctx.stroke();
+
+    // bulbs
+    const bulbs = 60;
+    for(let i=0;i<bulbs;i++){
+      const a = (i/bulbs)*Math.PI*2;
+      const r = radius+16;
+      const x = Math.cos(a)*r, y = Math.sin(a)*r;
+      const g = ctx.createRadialGradient(x,y,1, x,y,7);
+      g.addColorStop(0,'rgba(255,255,220,.95)');
+      g.addColorStop(1,'rgba(255,215,120,.05)');
+      ctx.beginPath(); ctx.arc(x,y,4.8,0,Math.PI*2);
+      ctx.fillStyle = g; ctx.fill();
+    }
+
+    // sectors
+    for(let i=0;i<segments.length;i++){
+      const seg = segments[i];
+      const start = i*sliceAngle, end = start+sliceAngle;
+      ctx.beginPath(); ctx.moveTo(0,0); ctx.arc(0,0,radius,start,end); ctx.closePath();
+      const grad = ctx.createRadialGradient(0,0, radius*0.05, 0,0, radius);
+      grad.addColorStop(0, '#ffffff10');
+      grad.addColorStop(0.25, seg.color);
+      grad.addColorStop(1, shade(seg.color, -18));
+      ctx.fillStyle = grad; ctx.fill();
+      ctx.strokeStyle = 'rgba(0,0,0,.55)'; ctx.lineWidth = 2.2; ctx.stroke();
+      ctx.save();
+      ctx.rotate(start + sliceAngle/2);
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#0f1014';
+      ctx.font = `${Math.floor(radius*0.09)}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
+      wrapText(ctx, seg.label, radius*0.92, 0, radius*0.4, Math.floor(radius*0.09));
+      ctx.restore();
+    }
+
+    // hub
+    ctx.beginPath();
+    ctx.arc(0,0, radius*0.18, 0, Math.PI*2);
+    const hubGrad = ctx.createLinearGradient(-20,-20,20,20);
+    hubGrad.addColorStop(0, '#0e1016'); hubGrad.addColorStop(1, '#0a0c12');
+    ctx.fillStyle = hubGrad; ctx.fill();
+    ctx.beginPath();
+    ctx.arc(0,0, radius*0.18+6, 0, Math.PI*2);
+    ctx.lineWidth = 4; ctx.strokeStyle = ringGrad; ctx.stroke();
+
+    if(logo && logo.complete){
+      const s = radius * 0.24;
+      ctx.save();
+      ctx.globalAlpha = 0.22;
+      ctx.beginPath(); ctx.arc(0,0, s*0.75, 0, Math.PI*2); ctx.fillStyle = '#000'; ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.drawImage(logo, -s/2, -s/2, s, s);
+      ctx.restore();
+    }
+
     ctx.restore();
+  }
+
+  // tekst wrapping
+  function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    const words = text.split(' '); let line = ''; const lines=[];
+    for (let n=0;n<words.length;n++){
+      const test = line + words[n] + ' ';
+      if (ctx.measureText(test).width > maxWidth && n>0) { lines.push(line.trim()); line = words[n] + ' '; }
+      else line = test;
+    }
+    lines.push(line.trim());
+    let yy = y - (lines.length*lineHeight)/2 + lineHeight*0.85;
+    lines.forEach(l=>{ ctx.fillText(l, x, yy); yy += lineHeight; });
+  }
+  function shade(hex, pct){
+    const m = hex.match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
+    if(!m) return hex;
+    let [r,g,b] = [parseInt(m[1],16), parseInt(m[2],16), parseInt(m[3],16)];
+    r = Math.min(255, Math.max(0, r + Math.round(255 * (pct/100))));
+    g = Math.min(255, Math.max(0, g + Math.round(255 * (pct/100))));
+    b = Math.min(255, Math.max(0, b + Math.round(255 * (pct/100))));
+    return `rgb(${r},${g},${b})`;
   }
 
   // init
@@ -125,4 +210,3 @@
   powerBtn.addEventListener('click', powerUp);
   spinBtn.addEventListener('click', spin);
 })();
-
