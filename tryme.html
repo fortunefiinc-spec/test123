@@ -13,22 +13,20 @@
     <img src="logo.png" alt="FortuneFi Logo" class="logo sm" />
     <h1 class="title sm">Try the Wheel</h1>
   </header>
-
-  <main class="stage">
-    <div class="canvas-wrap">
-      <div class="pointer"></div>
-      <!-- gefixt: width/height verwijderd, JS regelt dit -->
-      <canvas id="wheel" aria-label="Spin Wheel"></canvas>
-      <canvas id="confetti"></canvas>
-    </div>
-    <div class="panel">
-      <div id="spinCount" class="muted">Spins left: 1</div>
-      <!-- knoppen -->
-      <button id="spinBtn" class="btn primary">SPIN</button>
-      <button id="powerBtn" class="btn ghost">⚡ Power Up</button>
-      <div id="result" class="result">Awaiting Your Fortune.</div>
-    </div>
-  </main>
+<main class="stage">
+  <div class="canvas-wrap">
+    <div class="pointer"></div>
+    <!-- Zet width en height terug -->
+    <canvas id="wheel" width="900" height="900" aria-label="Spin Wheel"></canvas>
+    <canvas id="confetti" width="900" height="900"></canvas>
+  </div>
+  <div class="panel">
+    <div id="spinCount" class="muted">Spins left: 1</div>
+    <button id="spinBtn" class="btn primary">SPIN</button>
+    <button id="powerBtn" class="btn ghost">⚡ Power Up</button>
+    <div id="result" class="result">Awaiting Your Fortune.</div>
+  </div>
+</main>
 
 
   <script src="script.js"></script>
