@@ -1,14 +1,18 @@
 // FortuneFi Wheel – Deluxe (Try Me page)
 (function(){
   const canvas = document.getElementById('wheel');
-  if(!canvas) return; // only run on tryme.html
+  if(!canvas) return;
 
   const ctx = canvas.getContext('2d');
   const spinBtn = document.getElementById('spinBtn');
   const resultEl = document.getElementById('result');
+  const powerBtn = document.getElementById('powerBtn');
 
   const cfx = document.getElementById('confetti');
   const conf = cfx.getContext('2d');
+
+  let spins = 1; // start met 1 spin
+  updateSpinBtn();
 
   const segments = [
     {label:"10 $FFI",  color:"#f6c54a", weight:10},
@@ -204,10 +208,12 @@
 
   // SPIN
   function spin(){
+    if(spinning || spins <= 0) return;
     ensureAudio();
-    if(spinning) return;
     spinning = true;
-    spinBtn.disabled = true;
+    spins--; // consume spin
+    updateSpinBtn();
+
     resultEl.textContent = "Creating Your FORTUNE…";
 
     const winner = weightedChoice(segments);
@@ -233,7 +239,12 @@
         resultEl.textContent = "🎉 YOU HAVE WON!: " + win.label;
         winChord();
         spawnConfetti(); tickConfetti();
-        spinning = false; spinBtn.disabled = false;
+        spinning = false;
+
+        if(win.label === "Extra Spin"){ 
+          spins++;
+          updateSpinBtn();
+        }
       }
     }
     requestAnimationFrame(frame);
@@ -247,9 +258,22 @@
     cfx.style.height = canvas.clientWidth + "px";
   }
 
+  function updateSpinBtn(){
+    spinBtn.textContent = `SPIN (${spins})`;
+    spinBtn.disabled = (spins <= 0);
+  }
+
+  // POWERUP
+  function powerUp(){
+    spins++;
+    updateSpinBtn();
+    resultEl.textContent = "⚡ Power Up activated! +1 Spin";
+  }
+
   drawWheel();
   fitOverlays();
   logo.addEventListener('load', drawWheel);
   window.addEventListener('resize', ()=>{ fitOverlays(); drawWheel(); });
   spinBtn.addEventListener('click', spin);
+  powerBtn.addEventListener('click', powerUp);
 })();
