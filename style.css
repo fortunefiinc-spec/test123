@@ -112,22 +112,3 @@ canvas { display:block; width:100%; height:auto; border-radius:14px; }
   transform: scale(1.1);
   box-shadow: 0 0 20px rgba(34,158,217,0.9);
 }
-/* Zorg dat het wiel altijd zichtbaar is en confetti erboven ligt */
-.canvas-wrap {
-  position: relative;
-}
-
-#wheel {
-  position: relative;
-  z-index: 1;
-}
-
-#confetti {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;           /* ligt bovenop */
-  pointer-events: none; /* zodat klikken op de spin-knop blijft werken */
-}
