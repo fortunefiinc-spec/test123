@@ -34,7 +34,7 @@
   const logo = new Image();
   logo.src = "logo.png";
 
-  // ---------- AUDIO ----------
+  // --- AUDIO ---
   let audioCtx;
   function ensureAudio(){
     if(!audioCtx){
@@ -57,7 +57,7 @@
     seq.forEach((f,i)=> setTimeout(()=> ping(f, 0.06, 0.08), i*90));
   }
 
-  // ---------- CONFETTI ----------
+  // --- CONFETTI ---
   let confetti = [];
   function spawnConfetti(n=120){
     confetti.length = 0;
@@ -94,13 +94,13 @@
     if(confetti.length) requestAnimationFrame(tickConfetti);
   }
 
-  // UI update
+  // --- UI update ---
   function updateSpinUI(){
-    spinBtn.disabled = (spins <= 0);
+    spinBtn.disabled = (spins <= 0 || spinning);
     spinCountEl.textContent = `Spins left: ${spins}`;
   }
 
-  // RNG helpers
+  // --- RNG ---
   function weightedChoice(items){
     const total = items.reduce((a,b)=>a+(b.weight||0),0);
     let r = Math.random()*total;
@@ -118,7 +118,7 @@
   }
   function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
 
-  // SPIN functie
+  // --- SPIN functie ---
   function spin(){
     ensureAudio();
     if(spinning || spins <= 0) return;
@@ -149,32 +149,32 @@
         drawWheel();
         const win = segments[winner];
         resultEl.textContent = "🎉 YOU HAVE WON!: " + win.label;
-        spinning = false;
 
-        // extra spin winnen
+        // geluid + confetti
+        winChord();
+        spawnConfetti(); tickConfetti();
+
+        // extra spin
         if(win.label === "Extra Spin"){ 
           spins++;
           resultEl.textContent += " (+1 spin)";
         }
 
-        // geluid + confetti bij winst
-        winChord();
-        spawnConfetti(); tickConfetti();
-
+        spinning = false;
         updateSpinUI();
       }
     }
     requestAnimationFrame(frame);
   }
 
-  // PowerUp
+  // --- PowerUp ---
   function powerUp(){
     spins++;
     updateSpinUI();
     resultEl.textContent = "⚡ Power Up activated! +1 Spin";
   }
 
-  // ---- DRAW WHEEL (originele versie teruggezet) ----
+  // --- DRAW WHEEL ---
   function drawWheel(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     ctx.save();
@@ -248,7 +248,6 @@
     ctx.restore();
   }
 
-  // tekst wrapping
   function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
     const words = text.split(' '); let line = ''; const lines=[];
     for (let n=0;n<words.length;n++){
@@ -265,13 +264,14 @@
     if(!m) return hex;
     let [r,g,b] = [parseInt(m[1],16), parseInt(m[2],16), parseInt(m[3],16)];
     r = Math.min(255, Math.max(0, r + Math.round(255 * (pct/100))));
-    g = Math.min(255, Math.max(0, g + Math.round(255 * (pct/100))));
+        g = Math.min(255, Math.max(0, g + Math.round(255 * (pct/100))));
     b = Math.min(255, Math.max(0, b + Math.round(255 * (pct/100))));
     return `rgb(${r},${g},${b})`;
   }
 
-  // init
+  // --- INIT ---
   drawWheel();
   powerBtn.addEventListener('click', powerUp);
   spinBtn.addEventListener('click', spin);
 })();
+
