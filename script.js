@@ -1,19 +1,14 @@
 // FortuneFi Wheel – Deluxe (Try Me page)
 (function(){
   const canvas = document.getElementById('wheel');
-  if(!canvas) return;
+  if(!canvas) return; // only run on tryme.html
 
   const ctx = canvas.getContext('2d');
   const spinBtn = document.getElementById('spinBtn');
   const resultEl = document.getElementById('result');
-  const powerBtn = document.getElementById('powerBtn');
-  const spinCountEl = document.getElementById('spinCount');
 
   const cfx = document.getElementById('confetti');
   const conf = cfx.getContext('2d');
-
-  let spins = 1; // startwaarde
-  updateSpinUI();
 
   const segments = [
     {label:"10 $FFI",  color:"#f6c54a", weight:10},
@@ -34,7 +29,7 @@
   const logo = new Image();
   logo.src = "logo.png";
 
-  // --- AUDIO ---
+  // AUDIO
   let audioCtx;
   function ensureAudio(){
     if(!audioCtx){
@@ -57,7 +52,7 @@
     seq.forEach((f,i)=> setTimeout(()=> ping(f, 0.06, 0.08), i*90));
   }
 
-  // --- CONFETTI ---
+  // CONFETTI
   let confetti = [];
   function spawnConfetti(n=120){
     confetti.length = 0;
@@ -94,87 +89,7 @@
     if(confetti.length) requestAnimationFrame(tickConfetti);
   }
 
-  // --- UI update ---
-  function updateSpinUI(){
-    spinBtn.disabled = (spins <= 0 || spinning);
-    spinCountEl.textContent = `Spins left: ${spins}`;
-  }
-
-  // --- RNG ---
-  function weightedChoice(items){
-    const total = items.reduce((a,b)=>a+(b.weight||0),0);
-    let r = Math.random()*total;
-    for(let i=0;i<items.length;i++){ r -= (items[i].weight||0); if(r<=0) return i; }
-    return items.length-1;
-  }
-  function angleForIndex(index){
-    const targetMid = index * sliceAngle + sliceAngle/2;
-    return (3*Math.PI/2 - targetMid + Math.PI*2) % (Math.PI*2);
-  }
-  function shortestRotation(from,to){
-    let d = to - from;
-    while(d<=0) d += Math.PI*2;
-    return d;
-  }
-  function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
-
-  // --- SPIN functie ---
-  function spin(){
-    ensureAudio();
-    if(spinning || spins <= 0) return;
-    spinning = true;
-    spins--; // gebruik spin
-    updateSpinUI();
-
-    resultEl.textContent = "Creating Your FORTUNE…";
-
-    const winner = weightedChoice(segments);
-    const baseTarget = angleForIndex(winner);
-    const extraTurns = 4 + Math.floor(Math.random()*3);
-    const target = baseTarget + extraTurns * Math.PI*2;
-
-    const startAngle = currentAngle % (Math.PI*2);
-    const delta = shortestRotation(startAngle, target);
-    const duration = 3800 + Math.random()*900;
-    const start = performance.now();
-
-    function frame(now){
-      const t = Math.min(1, (now - start)/duration);
-      const eased = easeOutCubic(t);
-      currentAngle = startAngle + delta*eased;
-      drawWheel();
-      if(t<1){ requestAnimationFrame(frame); }
-      else {
-        currentAngle = target % (Math.PI*2);
-        drawWheel();
-        const win = segments[winner];
-        resultEl.textContent = "🎉 YOU HAVE WON!: " + win.label;
-
-        // geluid + confetti
-        winChord();
-        spawnConfetti(); tickConfetti();
-
-        // extra spin
-        if(win.label === "Extra Spin"){ 
-          spins++;
-          resultEl.textContent += " (+1 spin)";
-        }
-
-        spinning = false;
-        updateSpinUI();
-      }
-    }
-    requestAnimationFrame(frame);
-  }
-
-  // --- PowerUp ---
-  function powerUp(){
-    spins++;
-    updateSpinUI();
-    resultEl.textContent = "⚡ Power Up activated! +1 Spin";
-  }
-
-  // --- DRAW WHEEL ---
+  // DRAW
   function drawWheel(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     ctx.save();
@@ -264,14 +179,77 @@
     if(!m) return hex;
     let [r,g,b] = [parseInt(m[1],16), parseInt(m[2],16), parseInt(m[3],16)];
     r = Math.min(255, Math.max(0, r + Math.round(255 * (pct/100))));
-        g = Math.min(255, Math.max(0, g + Math.round(255 * (pct/100))));
+    g = Math.min(255, Math.max(0, g + Math.round(255 * (pct/100))));
     b = Math.min(255, Math.max(0, b + Math.round(255 * (pct/100))));
     return `rgb(${r},${g},${b})`;
   }
 
-  // --- INIT ---
+  // RNG
+  function weightedChoice(items){
+    const total = items.reduce((a,b)=>a+(b.weight||0),0);
+    let r = Math.random()*total;
+    for(let i=0;i<items.length;i++){ r -= (items[i].weight||0); if(r<=0) return i; }
+    return items.length-1;
+  }
+  function angleForIndex(index){
+    const targetMid = index * sliceAngle + sliceAngle/2;
+    return (3*Math.PI/2 - targetMid + Math.PI*2) % (Math.PI*2);
+  }
+  function shortestRotation(from,to){
+    let d = to - from;
+    while(d<=0) d += Math.PI*2;
+    return d;
+  }
+  function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+
+  // SPIN
+  function spin(){
+    ensureAudio();
+    if(spinning) return;
+    spinning = true;
+    spinBtn.disabled = true;
+    resultEl.textContent = "Creating Your FORTUNE…";
+
+    const winner = weightedChoice(segments);
+    const baseTarget = angleForIndex(winner);
+    const extraTurns = 4 + Math.floor(Math.random()*3);
+    const target = baseTarget + extraTurns * Math.PI*2;
+
+    const startAngle = currentAngle % (Math.PI*2);
+    const delta = shortestRotation(startAngle, target);
+    const duration = 3800 + Math.random()*900;
+    const start = performance.now();
+
+    function frame(now){
+      const t = Math.min(1, (now - start)/duration);
+      const eased = easeOutCubic(t);
+      currentAngle = startAngle + delta*eased;
+      drawWheel();
+      if(t<1){ requestAnimationFrame(frame); }
+      else {
+        currentAngle = target % (Math.PI*2);
+        drawWheel();
+        const win = segments[winner];
+        resultEl.textContent = "🎉 YOU HAVE WON!: " + win.label;
+        winChord();
+        spawnConfetti(); tickConfetti();
+        spinning = false; spinBtn.disabled = false;
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function fitOverlays(){
+    const dpr = window.devicePixelRatio || 1;
+    cfx.width = canvas.clientWidth * dpr;
+    cfx.height = canvas.clientWidth * dpr;
+    cfx.style.width = canvas.clientWidth + "px";
+    cfx.style.height = canvas.clientWidth + "px";
+  }
+
   drawWheel();
-  powerBtn.addEventListener('click', powerUp);
+  fitOverlays();
+  logo.addEventListener('load', drawWheel);
+  window.addEventListener('resize', ()=>{ fitOverlays(); drawWheel(); });
   spinBtn.addEventListener('click', spin);
 })();
-
