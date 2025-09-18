@@ -125,3 +125,4 @@
   powerBtn.addEventListener('click', powerUp);
   spinBtn.addEventListener('click', spin);
 })();
+
