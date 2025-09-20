@@ -145,15 +145,12 @@ canvas { display:block; width:100%; height:auto; border-radius:14px; }
 
 .header-bar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: min(92vw, 720px); /* zelfde als .stage */
+  justify-content: center;
+  width: 100%;
   margin: 0 auto 16px;
-  padding: 0 12px;
 }
 
 .header-center {
-  flex: 1;
   text-align: center;
 }
 
@@ -172,8 +169,3 @@ canvas { display:block; width:100%; height:auto; border-radius:14px; }
   width: 80px; /* zelfde breedte als back-btn, zodat center echt in het midden staat */
 }
 
-.back-btn {
-  font-size: 14px;
-  padding: 6px 14px;
-  border-radius: 10px;
-}
