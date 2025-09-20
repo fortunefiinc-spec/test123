@@ -14,11 +14,13 @@ body {
   flex-direction: column;
   align-items: center;
   background: #0b0c11; /* fallback */
-  overflow: hidden;
+  /* overflow: hidden;   <-- deze weghalen! */
+  overflow-x: hidden;   /* alleen horizontaal blokkeren */
   color: var(--text);
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   position: relative;
 }
+
 
 /* ⭐ Sterren Canvas */
 #stars {
