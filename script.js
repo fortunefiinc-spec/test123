@@ -32,7 +32,7 @@
     {label:"20 $FFI",  color:"#f6c54a", weight:7},
     {label:"TRY AGAIN",  color:"#f65c4a", weight:11},
     {label:"50 $FFI",  color:"#ff944a", weight:3},
-    {label:"TRY AGAIN",  color:"#f65c4a", weight:11}
+    
     
   ];
 
