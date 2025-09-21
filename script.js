@@ -43,18 +43,20 @@
   const logo = new Image();
   logo.src = "logo.png";
 
-  // --- SOUND (real tick) ---
-  const tickSound = new Audio("tick.wav"); // plaats in /sounds/
+  // --- SOUND FILES ---
+  const tickSound = new Audio("sounds/tick.wav");      // sector tick
+  const confettiSound = new Audio("sounds/confetti.wav"); // confetti (cheer/pop)
 
   function winChord(){
     const seq = [880, 1175, 1568];
     seq.forEach((f,i)=> setTimeout(()=> {
-      const o = new (window.AudioContext || window.webkitAudioContext)().createOscillator();
-      const g = new (window.AudioContext || window.webkitAudioContext)().createGain();
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
       o.type = 'sine';
       o.frequency.value = f;
       g.gain.value = 0.05;
-      o.connect(g); g.connect(window.AudioContext ? new AudioContext().destination : g.context.destination);
+      o.connect(g); g.connect(audioCtx.destination);
       o.start();
       setTimeout(()=>o.stop(), 150);
     }, i*120));
@@ -77,7 +79,12 @@
         col: ['#f6c54a','#ff944a','#f65c4a','#7aa2ff','#c08bff'][Math.floor(Math.random()*5)]
       });
     }
+
+    // confetti sound trigger
+    confettiSound.currentTime = 0;
+    confettiSound.play().catch(()=>{});
   }
+
   function tickConfetti(){
     conf.clearRect(0,0,cfx.width,cfx.height);
     conf.save();
