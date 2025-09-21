@@ -44,8 +44,8 @@
   logo.src = "logo.png";
 
   // --- SOUND FILES ---
-  const tickSound = new Audio("sounds/tick.wav");      // sector tick
-  const confettiSound = new Audio("sounds/confetti.wav"); // confetti (cheer/pop)
+  const tickSound = new Audio("tick.wav");      // sector tick
+  const confettiSound = new Audio("confetti.wav"); // confetti (cheer/pop)
 
   function winChord(){
     const seq = [880, 1175, 1568];
