@@ -45,7 +45,7 @@
 
   // --- SOUND FILES ---
   const tickSound = new Audio("tick.wav");      // sector tick
-  const confettiSound = new Audio("confetti.wav"); // confetti (cheer/pop)
+  const confettiSound = new Audio("Confetti.wav"); // confetti (cheer/pop)
 
   function winChord(){
     const seq = [880, 1175, 1568];
