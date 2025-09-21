@@ -1,7 +1,7 @@
 // FortuneFi Wheel – Deluxe (Try Me page)
 (function(){
   const canvas = document.getElementById('wheel');
-  if(!canvas) return; // only run on tryme.html
+  if(!canvas) return; 
 
   const ctx = canvas.getContext('2d');
   const spinBtn = document.getElementById('spinBtn');
@@ -43,27 +43,21 @@
   const logo = new Image();
   logo.src = "logo.png";
 
-  // --- AUDIO ---
-  let audioCtx;
-  function ensureAudio(){
-    if(!audioCtx){
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-  }
-  function ping(freq=900, dur=0.03, gain=0.06){
-    if(!audioCtx) return;
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type = 'square';
-    o.frequency.value = freq + (Math.random()*60-30);
-    g.gain.value = gain;
-    o.connect(g); g.connect(audioCtx.destination);
-    o.start();
-    setTimeout(()=>{ o.stop(); }, dur*1000);
-  }
+  // --- SOUND (real tick) ---
+  const tickSound = new Audio("tick.mp3"); // plaats in /sounds/
+
   function winChord(){
     const seq = [880, 1175, 1568];
-    seq.forEach((f,i)=> setTimeout(()=> ping(f, 0.06, 0.08), i*90));
+    seq.forEach((f,i)=> setTimeout(()=> {
+      const o = new (window.AudioContext || window.webkitAudioContext)().createOscillator();
+      const g = new (window.AudioContext || window.webkitAudioContext)().createGain();
+      o.type = 'sine';
+      o.frequency.value = f;
+      g.gain.value = 0.05;
+      o.connect(g); g.connect(window.AudioContext ? new AudioContext().destination : g.context.destination);
+      o.start();
+      setTimeout(()=>o.stop(), 150);
+    }, i*120));
   }
 
   // --- CONFETTI ---
@@ -122,11 +116,7 @@
     while(d<=0) d += Math.PI*2;
     return d;
   }
-  function easeOutBack(t) {
-    const c1 = 1.70158;
-    const c3 = c1 + 1;
-    return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
-  }
+  function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
 
   // --- DRAW WHEEL ---
   function drawWheel(){
@@ -227,7 +217,6 @@
 
   // --- SPIN ---
   function spin(){
-    ensureAudio();
     if(spinning || spins <= 0) return;
     spinning = true;
     spins--;
@@ -253,14 +242,15 @@
 
     function frame(now){
       const t = Math.min(1, (now - start)/duration);
-      const eased = easeOutBack(t);
+      const eased = easeOutCubic(t);
       currentAngle = startAngle + delta*eased;
       drawWheel();
 
       // tik geluid
       const segIndex = Math.floor(((currentAngle % (Math.PI*2)) / sliceAngle));
       if(segIndex !== lastTick) {
-        ping(1200, 0.02, 0.04);
+        tickSound.currentTime = 0;
+        tickSound.play().catch(()=>{});
         lastTick = segIndex;
       }
 
