@@ -22,11 +22,13 @@
   }
 
   const segments = [
+    {label:"Extra Spin",color:"#ff944a", weight:8},
     {label:"10 $FFI",  color:"#f6c54a", weight:10},
     {label:"Extra Spin",color:"#ff944a", weight:8},
     {label:"20 $FFI",  color:"#f6c54a", weight:7},
     {label:"50 $FFI",  color:"#ff944a", weight:3},
-    {label:"Jackpot!",  color:"#f65c4a", weight:1}
+    {label:"NFT!",  color:"#f65c4a", weight:1}
+    
   ];
 
   const sliceAngle = 2*Math.PI/segments.length;
