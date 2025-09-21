@@ -47,19 +47,7 @@
   const tickSound = new Audio("tick.wav");      // sector tick
   const confettiSound = new Audio("Confetti.wav"); // confetti (cheer/pop)
 
-  function winChord(){
-    const seq = [880, 1175, 1568];
-    seq.forEach((f,i)=> setTimeout(()=> {
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const o = audioCtx.createOscillator();
-      const g = audioCtx.createGain();
-      o.type = 'sine';
-      o.frequency.value = f;
-      g.gain.value = 0.05;
-      o.connect(g); g.connect(audioCtx.destination);
-      o.start();
-      setTimeout(()=>o.stop(), 150);
-    }, i*120));
+
   }
 
   // --- CONFETTI ---
