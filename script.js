@@ -44,23 +44,9 @@
   logo.src = "logo.png";
 
   // --- SOUND FILES ---
-  const tickSound = new Audio("sounds/tick.wav");      // sector tick
-  const confettiSound = new Audio("Confetti.wav"); // confetti (cheer/pop)
-
-  function winChord(){
-    const seq = [880, 1175, 1568];
-    seq.forEach((f,i)=> setTimeout(()=> {
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const o = audioCtx.createOscillator();
-      const g = audioCtx.createGain();
-      o.type = 'sine';
-      o.frequency.value = f;
-      g.gain.value = 0.05;
-      o.connect(g); g.connect(audioCtx.destination);
-      o.start();
-      setTimeout(()=>o.stop(), 150);
-    }, i*120));
-  }
+  const tickSound = new Audio("sounds/tick.wav");     
+  const confettiSound = new Audio("sounds/confetti.wav"); 
+  const loseSound = new Audio("sounds/aww.wav"); 
 
   // --- CONFETTI ---
   let confetti = [];
@@ -234,9 +220,7 @@
     const winner = weightedChoice(segments);
     const baseTarget = angleForIndex(winner);
 
-    // random offset zodat niet exact midden
     const offset = (Math.random() - 0.5) * 0.25; 
-
     const extraTurns = 4 + Math.floor(Math.random()*3);
     const target = baseTarget + offset + extraTurns * Math.PI*2;
 
@@ -253,7 +237,6 @@
       currentAngle = startAngle + delta*eased;
       drawWheel();
 
-      // tik geluid
       const segIndex = Math.floor(((currentAngle % (Math.PI*2)) / sliceAngle));
       if(segIndex !== lastTick) {
         tickSound.currentTime = 0;
@@ -269,9 +252,13 @@
         const win = segments[winner];
         resultEl.textContent = "🎉 YOU HAVE WON!: " + win.label;
 
-        winChord();
-        spawnConfetti(); 
-        tickConfetti();
+        if(win.label === "TRY AGAIN"){
+          loseSound.currentTime = 0;
+          loseSound.play().catch(()=>{});
+        } else {
+          spawnConfetti(); 
+          tickConfetti();
+        }
 
         if(win.label === "Extra Spin"){ 
           spins++;
