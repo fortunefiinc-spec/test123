@@ -22,7 +22,7 @@
   }
 
   const segments = [
-    {label:"NFT",  color:"#f6c54a", weight:1,
+   
     {label:"TRY AGAIN",  color:"#f65c4a", weight:11},
     {label:"TRY AGAIN",  color:"#f65c4a", weight:11},
     {label:"Extra Spin",color:"#ff944a", weight:8},
