@@ -13,7 +13,7 @@
   const conf = cfx.getContext('2d');
 
   // --- spins ---
-  let spins = 1; // altijd starten met 1 spin
+  let spins = 1;
   let spinning = false;
 
   function updateSpinUI(){
@@ -22,18 +22,15 @@
   }
 
   const segments = [
-   
     {label:"TRY AGAIN",  color:"#f65c4a", weight:11},
-    {label:"Extra Spin",color:"#ff944a", weight:8},
-    {label:"NFT",  color:"#add8e6", weight:11},
-    {label:"10 $FFI",  color:"#f6c54a", weight:10},
+    {label:"Extra Spin", color:"#ff944a", weight:8},
+    {label:"NFT",        color:"#add8e6", weight:11},
+    {label:"10 $FFI",    color:"#f6c54a", weight:10},
     {label:"TRY AGAIN",  color:"#f65c4a", weight:11},
-    {label:"Extra Spin",color:"#ff944a", weight:8},
-    {label:"20 $FFI",  color:"#f6c54a", weight:7},
+    {label:"Extra Spin", color:"#ff944a", weight:8},
+    {label:"20 $FFI",    color:"#f6c54a", weight:7},
     {label:"TRY AGAIN",  color:"#f65c4a", weight:11},
-    {label:"50 $FFI",  color:"#ff944a", weight:3},
-    
-    
+    {label:"50 $FFI",    color:"#ff944a", weight:3},
   ];
 
   const sliceAngle = 2*Math.PI/segments.length;
@@ -110,7 +107,10 @@
   function weightedChoice(items){
     const total = items.reduce((a,b)=>a+(b.weight||0),0);
     let r = Math.random()*total;
-    for(let i=0;i<items.length;i++){ r -= (items[i].weight||0); if(r<=0) return i; }
+    for(let i=0;i<items.length;i++){ 
+      r -= (items[i].weight||0); 
+      if(r<=0) return i; 
+    }
     return items.length-1;
   }
   function angleForIndex(index){
@@ -122,7 +122,11 @@
     while(d<=0) d += Math.PI*2;
     return d;
   }
-  function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+  function easeOutBack(t) {
+    const c1 = 1.70158;
+    const c3 = c1 + 1;
+    return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+  }
 
   // --- DRAW WHEEL ---
   function drawWheel(){
@@ -202,8 +206,10 @@
     const words = text.split(' '); let line = ''; const lines=[];
     for (let n=0;n<words.length;n++){
       const test = line + words[n] + ' ';
-      if (ctx.measureText(test).width > maxWidth && n>0) { lines.push(line.trim()); line = words[n] + ' '; }
-      else line = test;
+      if (ctx.measureText(test).width > maxWidth && n>0) { 
+        lines.push(line.trim()); 
+        line = words[n] + ' '; 
+      } else line = test;
     }
     lines.push(line.trim());
     let yy = y - (lines.length*lineHeight)/2 + lineHeight*0.85;
@@ -224,35 +230,51 @@
     ensureAudio();
     if(spinning || spins <= 0) return;
     spinning = true;
-    spins--; // spin verbruiken
+    spins--;
     updateSpinUI();
 
     resultEl.textContent = "Creating Your FORTUNE…";
 
     const winner = weightedChoice(segments);
     const baseTarget = angleForIndex(winner);
+
+    // random offset zodat niet exact midden
+    const offset = (Math.random() - 0.5) * 0.25; 
+
     const extraTurns = 4 + Math.floor(Math.random()*3);
-    const target = baseTarget + extraTurns * Math.PI*2;
+    const target = baseTarget + offset + extraTurns * Math.PI*2;
 
     const startAngle = currentAngle % (Math.PI*2);
     const delta = shortestRotation(startAngle, target);
-    const duration = 3800 + Math.random()*900;
+    const duration = 4200 + Math.random()*900;
     const start = performance.now();
+
+    let lastTick = -1;
 
     function frame(now){
       const t = Math.min(1, (now - start)/duration);
-      const eased = easeOutCubic(t);
+      const eased = easeOutBack(t);
       currentAngle = startAngle + delta*eased;
       drawWheel();
-      if(t<1){ requestAnimationFrame(frame); }
-      else {
+
+      // tik geluid
+      const segIndex = Math.floor(((currentAngle % (Math.PI*2)) / sliceAngle));
+      if(segIndex !== lastTick) {
+        ping(1200, 0.02, 0.04);
+        lastTick = segIndex;
+      }
+
+      if(t<1){ 
+        requestAnimationFrame(frame); 
+      } else {
         currentAngle = target % (Math.PI*2);
         drawWheel();
         const win = segments[winner];
         resultEl.textContent = "🎉 YOU HAVE WON!: " + win.label;
 
         winChord();
-        spawnConfetti(); tickConfetti();
+        spawnConfetti(); 
+        tickConfetti();
 
         if(win.label === "Extra Spin"){ 
           spins++;
