@@ -44,7 +44,7 @@
   logo.src = "logo.png";
 
   // --- SOUND (real tick) ---
-  const tickSound = new Audio("tick.mp3"); // plaats in /sounds/
+  const tickSound = new Audio("tick.wav"); // plaats in /sounds/
 
   function winChord(){
     const seq = [880, 1175, 1568];
