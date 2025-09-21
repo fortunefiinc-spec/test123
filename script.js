@@ -45,8 +45,8 @@
 
   // --- SOUND FILES ---
   const tickSound = new Audio("sounds/tick.wav");     
-  const confettiSound = new Audio("sounds/confetti.wav"); 
-  const loseSound = new Audio("sounds/aww.wav"); 
+  const confettiSound = new Audio("Confetti.wav"); 
+  const loseSound = new Audio("aww.mp3"); 
 
   // --- CONFETTI ---
   let confetti = [];
