@@ -43,6 +43,10 @@
   const logo = new Image();
   logo.src = "logo.png";
 
+  // --- NFT IMAGE ---
+  const nftImg = new Image();
+  nftImg.src = "NFT.png"; // vervang dit door jouw NFT-plaatje
+
   // --- SOUND FILES ---
   const tickSound = new Audio("sounds/tick.wav");     
   const confettiSound = new Audio("Confetti.wav"); 
@@ -66,7 +70,6 @@
       });
     }
 
-    // confetti sound trigger
     confettiSound.currentTime = 0;
     confettiSound.play().catch(()=>{});
   }
@@ -155,10 +158,18 @@
       ctx.strokeStyle = 'rgba(0,0,0,.55)'; ctx.lineWidth = 2.2; ctx.stroke();
       ctx.save();
       ctx.rotate(start + sliceAngle/2);
-      ctx.textAlign = 'right';
-      ctx.fillStyle = '#0f1014';
-      ctx.font = `${Math.floor(radius*0.09)}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
-      wrapText(ctx, seg.label, radius*0.92, 0, radius*0.4, Math.floor(radius*0.09));
+
+      if(seg.label === "NFT" && nftImg.complete){
+        // NFT afbeelding tonen
+        const imgSize = radius * 0.55;
+        ctx.drawImage(nftImg, radius*0.4 - imgSize/2, -imgSize/2, imgSize, imgSize);
+      } else {
+        // standaard tekst
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#0f1014';
+        ctx.font = `${Math.floor(radius*0.09)}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
+        wrapText(ctx, seg.label, radius*0.92, 0, radius*0.4, Math.floor(radius*0.09));
+      }
       ctx.restore();
     }
 
@@ -291,6 +302,7 @@
   drawWheel();
   fitOverlays();
   logo.addEventListener('load', drawWheel);
+  nftImg.addEventListener('load', drawWheel);
   window.addEventListener('resize', ()=>{ fitOverlays(); drawWheel(); });
   spinBtn.addEventListener('click', spin);
   powerBtn.addEventListener('click', powerUp);
