@@ -45,7 +45,7 @@
 
   // --- NFT IMAGE ---
   const nftImg = new Image();
-  nftImg.src = "NFT.png"; // vervang dit door jouw NFT-plaatje
+  nftImg.src = "NFT.png"; // zet hier jouw NFT afbeelding neer
 
   // --- SOUND FILES ---
   const tickSound = new Audio("sounds/tick.wav");     
@@ -69,7 +69,6 @@
         col: ['#f6c54a','#ff944a','#f65c4a','#7aa2ff','#c08bff'][Math.floor(Math.random()*5)]
       });
     }
-
     confettiSound.currentTime = 0;
     confettiSound.play().catch(()=>{});
   }
@@ -149,28 +148,48 @@
     for(let i=0;i<segments.length;i++){
       const seg = segments[i];
       const start = i*sliceAngle, end = start+sliceAngle;
-      ctx.beginPath(); ctx.moveTo(0,0); ctx.arc(0,0,radius,start,end); ctx.closePath();
+
+      ctx.save();
+      // Clip slice shape
+      ctx.beginPath(); 
+      ctx.moveTo(0,0); 
+      ctx.arc(0,0,radius,start,end); 
+      ctx.closePath();
+      ctx.clip();
+
+      // achtergrond
       const grad = ctx.createRadialGradient(0,0, radius*0.05, 0,0, radius);
       grad.addColorStop(0, '#ffffff10');
       grad.addColorStop(0.25, seg.color);
       grad.addColorStop(1, shade(seg.color, -18));
-      ctx.fillStyle = grad; ctx.fill();
-      ctx.strokeStyle = 'rgba(0,0,0,.55)'; ctx.lineWidth = 2.2; ctx.stroke();
-      ctx.save();
-      ctx.rotate(start + sliceAngle/2);
+      ctx.fillStyle = grad; 
+      ctx.fill();
 
+      // NFT slice
       if(seg.label === "NFT" && nftImg.complete){
-        // NFT afbeelding tonen
-        const imgSize = radius * 0.55;
-        ctx.drawImage(nftImg, radius*0.4 - imgSize/2, -imgSize/2, imgSize, imgSize);
+        const imgSize = radius * 1.6; // vult netjes de slice
+        ctx.drawImage(nftImg, -imgSize/2, -imgSize/2, imgSize, imgSize);
       } else {
-        // standaard tekst
+        // tekst slice
+        ctx.save();
+        ctx.rotate(start + sliceAngle/2);
         ctx.textAlign = 'right';
         ctx.fillStyle = '#0f1014';
         ctx.font = `${Math.floor(radius*0.09)}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
         wrapText(ctx, seg.label, radius*0.92, 0, radius*0.4, Math.floor(radius*0.09));
+        ctx.restore();
       }
+
       ctx.restore();
+
+      // rand van slice
+      ctx.beginPath(); 
+      ctx.moveTo(0,0); 
+      ctx.arc(0,0,radius,start,end); 
+      ctx.closePath();
+      ctx.strokeStyle = 'rgba(0,0,0,.55)'; 
+      ctx.lineWidth = 2.2; 
+      ctx.stroke();
     }
 
     // hub
