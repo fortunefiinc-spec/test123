@@ -162,21 +162,22 @@ for (let i = 0; i < segments.length; i++) {
   if (seg.label === "NFT" && nftImg.complete) {
    
     // ---- NFT slice ----
-    ctx.clip(); // alleen binnen deze slice tekenen
+   ctx.clip(); // alleen binnen deze slice tekenen
 
-    // NFT afbeelding vullen over de slice
-    ctx.drawImage(
-      nftImg,
-      -radius,       // x vanaf midden
-      -radius,       // y vanaf midden
-      radius * 1.2,    // breedte
-      radius * 1.2     // hoogte
-    );
+const imgSize = radius * 2.2; // groter maken zodat slice mooi gevuld wordt
+ctx.drawImage(
+  nftImg,
+  -imgSize / 2,  // gecentreerd X
+  -imgSize / 2,  // gecentreerd Y
+  imgSize,       // breedte
+  imgSize        // hoogte
+);
 
-    // rand van slice tekenen
-    ctx.strokeStyle = 'rgba(0,0,0,.55)';
-    ctx.lineWidth = 2.2;
-    ctx.stroke();
+// rand van slice tekenen
+ctx.strokeStyle = 'rgba(0,0,0,.55)';
+ctx.lineWidth = 2.2;
+ctx.stroke();
+
 
   } else {
     // ---- standaard slice ----
