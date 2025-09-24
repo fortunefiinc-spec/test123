@@ -160,16 +160,22 @@ for (let i = 0; i < segments.length; i++) {
   ctx.closePath();
 
   
-   if(seg.label === "NFT" && nftImg.complete){
-  ctx.clip(); // slice als masker
+ctx.clip(); // alleen binnen deze slice tekenen
 
-  const imgSize = radius * 1.4;   // schaal (zoom in/out)
-  const offsetX = -imgSize * 0.5; // horizontaal centreren
-  const offsetY = -imgSize * 0.8; // schuif omhoog (0.5 = midden, 0.8 duwt hoger)
+const imgSize = radius * 1.6; // minder groot zodat het beter past
+ctx.drawImage(
+  nftImg,
+  -imgSize / 2 + radius * 0.2,  // x iets opschuiven naar buiten
+  -imgSize / 2,                 // y in het midden
+  imgSize,
+  imgSize
+);
 
-  ctx.drawImage(nftImg, offsetX, offsetY, imgSize, imgSize);
+// rand van slice tekenen
+ctx.strokeStyle = 'rgba(0,0,0,.55)';
+ctx.lineWidth = 2.2;
+ctx.stroke();
 
-  ctx.restore();
 }
 
 // rand van slice tekenen
