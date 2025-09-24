@@ -170,8 +170,8 @@
         ctx.clip();
 
         
-        const imgSize = radius * 2;
-        ctx.drawImage(nftImg, -imgSize/2 , -imgSize/2, imgSize, imgSize);
+        const imgSize = radius * 1;
+        ctx.drawImage(nftImg, -imgSize/3 , -imgSize/3, imgSize, imgSize);
         
 
         ctx.restore();
