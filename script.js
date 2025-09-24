@@ -168,10 +168,11 @@
         ctx.arc(0,0,radius,-sliceAngle/2,sliceAngle/2);
         ctx.closePath();
         ctx.clip();
-
-        ctx.rotate(Math.PI*2);
-        const imgSize = radius * 1;
-        ctx.drawImage(nftImg, -imgSize/4 , -imgSize/4, imgSize, imgSize);
+        
+        ctx.rotate(Math.PI/2); // 180° draaien
+        const imgSize = radius * 0.5;
+        console.log(imgSize/4.6)
+        ctx.drawImage(nftImg, -35, -imgSize/0.51, imgSize/1.4, imgSize);
         
 
         ctx.restore();
