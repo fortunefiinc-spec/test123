@@ -169,8 +169,8 @@ for (let i = 0; i < segments.length; i++) {
       nftImg,
       -radius,       // x vanaf midden
       -radius,       // y vanaf midden
-      radius * 6,    // breedte
-      radius * 6     // hoogte
+      radius * 1.2,    // breedte
+      radius * 1.2     // hoogte
     );
 
     // rand van slice tekenen
