@@ -170,7 +170,7 @@
 
         const imgW = radius * 0.2;
         const imgH = radius * 0.6;
-        ctx.drawImage(nftImg, radius*0.25 - imgW/2, -imgH/2, imgW, imgH);
+        ctx.drawImage(nftImg, radius*0.5 - imgW/2, -imgH/2, imgW, imgH);
 
         ctx.restore();
       } else {
