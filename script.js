@@ -45,7 +45,7 @@
 
   // --- NFT IMAGE ---
   const nftImg = new Image();
-  nftImg.src = "NFT.png"; // zet hier jouw NFT afbeelding neer
+  nftImg.src = "NFT.png"; // jouw NFT plaatje
 
   // --- SOUND FILES ---
   const tickSound = new Audio("sounds/tick.wav");     
@@ -144,50 +144,45 @@
       ctx.fillStyle = g; ctx.fill();
     }
 
-   // sectors
-for (let i = 0; i < segments.length; i++) {
-  const seg = segments[i];
-  const start = i * sliceAngle, end = start + sliceAngle;
-  ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, radius, start, end); ctx.closePath();
-  const grad = ctx.createRadialGradient(0, 0, radius * 0.05, 0, 0, radius);
-  grad.addColorStop(0, '#ffffff10');
-  grad.addColorStop(0.25, seg.color);
-  grad.addColorStop(1, shade(seg.color, -18));
-  ctx.fillStyle = grad; ctx.fill();
-  ctx.strokeStyle = 'rgba(0,0,0,.55)'; ctx.lineWidth = 2.2; ctx.stroke();
+    // sectors
+    for(let i=0;i<segments.length;i++){
+      const seg = segments[i];
+      const start = i*sliceAngle, end = start+sliceAngle;
 
-  ctx.save();
-  ctx.rotate(start + sliceAngle / 2);
+      ctx.beginPath(); ctx.moveTo(0,0); ctx.arc(0,0,radius,start,end); ctx.closePath();
+      const grad = ctx.createRadialGradient(0,0, radius*0.05, 0,0, radius);
+      grad.addColorStop(0, '#ffffff10');
+      grad.addColorStop(0.25, seg.color);
+      grad.addColorStop(1, shade(seg.color, -18));
+      ctx.fillStyle = grad; ctx.fill();
+      ctx.strokeStyle = 'rgba(0,0,0,.55)'; ctx.lineWidth = 2.2; ctx.stroke();
 
-  if (seg.label === "NFT" && nftImg.complete) {
-    // NFT kaart netjes in slice, met rotatie
-    ctx.save();
-    ctx.rotate(Math.PI); // draai 180° → pas aan naar Math.PI/2 of -Math.PI/2 als je 90° wilt
+      ctx.save();
+      ctx.rotate(start + sliceAngle/2);
 
-    const imgSize = radius * 1.6; // vult netjes de slice
-    ctx.drawImage(nftImg, -imgSize / 2, -imgSize / 2, imgSize, imgSize);
+      if(seg.label === "NFT" && nftImg.complete){
+        // NFT kaart netjes in slice + uitsnijden
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(0,0);
+        ctx.arc(0,0,radius,-sliceAngle/2,sliceAngle/2);
+        ctx.closePath();
+        ctx.clip();
 
-    ctx.restore();
-  } else {
-    // standaard tekst
-    ctx.textAlign = 'right';
-    ctx.fillStyle = '#0f1014';
-    ctx.font = `${Math.floor(radius * 0.09)}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
-    wrapText(ctx, seg.label, radius * 0.92, 0, radius * 0.4, Math.floor(radius * 0.09));
-  }
+        ctx.rotate(Math.PI); // 180° draaien
+        const imgSize = radius * 1.6;
+        ctx.drawImage(nftImg, -imgSize/2, -imgSize/2, imgSize, imgSize);
 
-  ctx.restore();
-}
+        ctx.restore();
+      } else {
+        // standaard tekst
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#0f1014';
+        ctx.font = `${Math.floor(radius*0.09)}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
+        wrapText(ctx, seg.label, radius*0.92, 0, radius*0.4, Math.floor(radius*0.09));
+      }
 
-
-      // rand van slice
-      ctx.beginPath(); 
-      ctx.moveTo(0,0); 
-      ctx.arc(0,0,radius,start,end); 
-      ctx.closePath();
-      ctx.strokeStyle = 'rgba(0,0,0,.55)'; 
-      ctx.lineWidth = 2.2; 
-      ctx.stroke();
+      ctx.restore();
     }
 
     // hub
@@ -226,6 +221,7 @@ for (let i = 0; i < segments.length; i++) {
     let yy = y - (lines.length*lineHeight)/2 + lineHeight*0.85;
     lines.forEach(l=>{ ctx.fillText(l, x, yy); yy += lineHeight; });
   }
+
   function shade(hex, pct){
     const m = hex.match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
     if(!m) return hex;
