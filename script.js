@@ -167,7 +167,7 @@ for (let i = 0; i < segments.length; i++) {
 const imgSize = radius * 1.6; // groter maken zodat slice mooi gevuld wordt
 ctx.drawImage(
   nftImg,
-   -imgSize / 1 + radius * 0.2,  // gecentreerd X
+   -imgSize / 7 + radius * 0.2,  // gecentreerd X
   -imgSize / 2,  // gecentreerd Y
   imgSize,       // breedte
   imgSize        // hoogte
