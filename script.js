@@ -168,11 +168,7 @@
         ctx.closePath();
         ctx.clip();
   
-        // <<< hier draaien >>> 
-          ctx.rotate(Math.PI / 1); // 90 graden met de klok mee
-          // gebruik Math.PI of -Math.PI/2 voor andere richtinge      
-
-          
+               
         const imgW = radius * 0.2;
         const imgH = radius * 0.6;
         ctx.drawImage(nftImg, radius*0.5 - imgW/2, -imgH/2, imgW, imgH);
