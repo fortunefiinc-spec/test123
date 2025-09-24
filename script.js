@@ -165,7 +165,7 @@
         ctx.save();
         ctx.beginPath();
         ctx.moveTo(0,0);
-        ctx.arc(0,0,radius,-sliceAngle/2,sliceAngle/2);
+        ctx.arc(0,0,radius,-sliceAngle/1.8,sliceAngle/2);
         ctx.closePath();
         ctx.clip();
 
