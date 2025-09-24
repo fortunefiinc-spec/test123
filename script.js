@@ -169,7 +169,7 @@
         ctx.clip();
   
         // <<< hier draaien >>> 
-          ctx.rotate(Math.PI / 2); // 90 graden met de klok mee
+          ctx.rotate(Math.PI / 1); // 90 graden met de klok mee
           // gebruik Math.PI of -Math.PI/2 voor andere richtinge      
 
           
