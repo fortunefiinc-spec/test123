@@ -170,8 +170,8 @@
         ctx.clip();
 
         ctx.rotate(Math.PI); // 180° draaien
-        const imgSize = radius * 1.6;
-        ctx.drawImage(nftImg, -imgSize/2, -imgSize/2, imgSize, imgSize);
+        const imgSize = radius * 0.5;
+        ctx.drawImage(nftImg, -imgSize/1, -imgSize/2, imgSize, imgSize);
         
 
         ctx.restore();
