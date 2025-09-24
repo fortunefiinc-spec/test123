@@ -164,10 +164,10 @@ for (let i = 0; i < segments.length; i++) {
     // ---- NFT slice ----
    ctx.clip(); // alleen binnen deze slice tekenen
 
-const imgSize = radius * 2.2; // groter maken zodat slice mooi gevuld wordt
+const imgSize = radius * 1.6; // groter maken zodat slice mooi gevuld wordt
 ctx.drawImage(
   nftImg,
-  -imgSize / 2,  // gecentreerd X
+   -imgSize / 2 + radius * 0.2,  // gecentreerd X
   -imgSize / 2,  // gecentreerd Y
   imgSize,       // breedte
   imgSize        // hoogte
