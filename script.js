@@ -171,7 +171,7 @@
 
         ctx.rotate(Math.PI*2);
         const imgSize = radius * 1;
-        ctx.drawImage(nftImg, -imgSize/2 , -imgSize/2, imgSize/2, imgSize/2);
+        ctx.drawImage(nftImg, -imgSize/4 , -imgSize/4, imgSize, imgSize);
         
 
         ctx.restore();
