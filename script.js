@@ -24,7 +24,7 @@
   const segments = [
     {label:"TRY AGAIN",  color:"#f65c4a", weight:11},
     {label:"Extra Spin", color:"#ff944a", weight:8},
-    {label:"NFT",        color:"#252525", weight:100},
+    {label:"NFT",        color:"#ffffff", weight:100},
     {label:"10 $FFI",    color:"#f6c54a", weight:10},
     {label:"TRY AGAIN",  color:"#f65c4a", weight:11},
     {label:"Extra Spin", color:"#ff944a", weight:8},
@@ -171,7 +171,7 @@
 
         
         const imgSize = radius * 1;
-        ctx.drawImage(nftImg, -imgSize/6 , -imgSize/3, imgSize, imgSize);
+        ctx.drawImage(nftImg, -imgSize/8 , -imgSize/3, imgSize, imgSize);
         
 
         ctx.restore();
