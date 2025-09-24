@@ -1,4 +1,4 @@
-// FortuneFi Wheel – Deluxe (Try Me page)
+F// FortuneFi Wheel – Deluxe (Try Me page)
 (function(){
   const canvas = document.getElementById('wheel');
   if(!canvas) return; 
@@ -169,7 +169,7 @@
         ctx.closePath();
         ctx.clip();
 
-        ctx.rotate(Math.PI/2); // 180° draaien
+        ctx.rotate(-Math.PI/2); // 180° draaien
         const imgSize = radius * 0.5;
         ctx.drawImage(nftImg, -imgSize/1, -imgSize/2, imgSize, imgSize);
         
