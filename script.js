@@ -1,4 +1,4 @@
-F// FortuneFi Wheel – Deluxe (Try Me page)
+// FortuneFi Wheel – Deluxe (Try Me page)
 (function(){
   const canvas = document.getElementById('wheel');
   if(!canvas) return; 
