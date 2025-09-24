@@ -171,13 +171,13 @@
 
         ctx.rotate(Math.PI/2); // 180° draaien
         const imgSize = radius * 0.5;
-        ctx.drawImage(nftImg, -imgSize/2.4, -imgSize/0.6, imgSize/1.4, imgSize);
+        ctx.drawImage(nftImg, -imgSize/2.45, -imgSize/0.4, imgSize/1.4, imgSize);
 
         ctx.restore();
       } else {
         // standaard tekst
         ctx.textAlign = 'right';
-        ctx.fillStyle = '#0f1014';
+        ctx.fillStyle = '#000';
         ctx.font = `${Math.floor(radius*0.09)}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
         wrapText(ctx, seg.label, radius*0.92, 0, radius*0.4, Math.floor(radius*0.09));
       }
