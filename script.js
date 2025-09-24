@@ -154,7 +154,7 @@
       grad.addColorStop(0, '#ffffff10');
       grad.addColorStop(0.25, seg.color);
       grad.addColorStop(1, shade(seg.color, -18));
-      ctx.fillStyle = grad; ctx.fill();
+      ctx.fillStyle = '#000'; ctx.fill();
       ctx.strokeStyle = 'rgba(0,0,0,.55)'; ctx.lineWidth = 2.2; ctx.stroke();
 
       ctx.save();
@@ -171,7 +171,7 @@
 
         ctx.rotate(Math.PI/2); // 180° draaien
         const imgSize = radius * 0.5;
-        ctx.drawImage(nftImg, -imgSize/2.45, -imgSize/0.4, imgSize/1.4, imgSize);
+        ctx.drawImage(nftImg, -imgSize/2.45, -imgSize/0.5, imgSize/1.4, imgSize);
 
         ctx.restore();
       } else {
