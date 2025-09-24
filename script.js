@@ -45,7 +45,7 @@
 
   // --- NFT IMAGE ---
   const nftImg = new Image();
-  nftImg.src = "rwa_loot.png"; // vervang dit door jouw NFT-plaatje
+  nftImg.src = "NFT.png"; // vervang dit door jouw NFT-plaatje
 
   // --- SOUND FILES ---
   const tickSound = new Audio("sounds/tick.wav");     
