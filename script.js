@@ -43,6 +43,10 @@
   const logo = new Image();
   logo.src = "logo.png";
 
+  // --- NFT IMAGE ---
+  const nftImg = new Image();
+  nftImg.src = "rwa_loot.png"; // vervang dit door jouw NFT-plaatje
+
   // --- SOUND FILES ---
   const tickSound = new Audio("sounds/tick.wav");     
   const confettiSound = new Audio("Confetti.wav"); 
@@ -66,7 +70,6 @@
       });
     }
 
-    // confetti sound trigger
     confettiSound.currentTime = 0;
     confettiSound.play().catch(()=>{});
   }
@@ -143,59 +146,32 @@
     }
 
     // sectors
-for (let i = 0; i < segments.length; i++) {
-  const seg = segments[i];
-  const start = i * sliceAngle, end = start + sliceAngle;
+    for(let i=0;i<segments.length;i++){
+      const seg = segments[i];
+      const start = i*sliceAngle, end = start+sliceAngle;
+      ctx.beginPath(); ctx.moveTo(0,0); ctx.arc(0,0,radius,start,end); ctx.closePath();
+      const grad = ctx.createRadialGradient(0,0, radius*0.05, 0,0, radius);
+      grad.addColorStop(0, '#ffffff10');
+      grad.addColorStop(0.25, seg.color);
+      grad.addColorStop(1, shade(seg.color, -18));
+      ctx.fillStyle = grad; ctx.fill();
+      ctx.strokeStyle = 'rgba(0,0,0,.55)'; ctx.lineWidth = 2.2; ctx.stroke();
+      ctx.save();
+      ctx.rotate(start + sliceAngle/2);
 
-  ctx.beginPath();
-  ctx.moveTo(0, 0);
-  ctx.arc(0, 0, radius, start, end);
-  ctx.closePath();
-
-  // === NFT SLICE TEKENEN ===
-  if (seg.label === "NFT" && nftImg.complete) {
-    ctx.save();
-    ctx.clip(); // alleen binnen deze slice tekenen
-
-    // draai en centreer naar midden slice
-    ctx.rotate(start + sliceAngle / 2 + Math.PI);
-
-    // afbeelding parameters
-    const imgSize = radius * 1.6;  // groter = inzoomen, kleiner = uitzoomen
-    const offsetX = -imgSize / 2;
-    const offsetY = -imgSize / 2;
-
-    ctx.drawImage(nftImg, offsetX, offsetY, imgSize, imgSize);
-
-    ctx.restore();
-
-    // rand van slice tekenen
-    ctx.strokeStyle = 'rgba(0,0,0,.55)';
-    ctx.lineWidth = 2.2;
-    ctx.stroke();
-
-  } else {
-    // === NORMALE SLICE ===
-    const grad = ctx.createRadialGradient(0, 0, radius * 0.05, 0, 0, radius);
-    grad.addColorStop(0, '#ffffff10');
-    grad.addColorStop(0.25, seg.color);
-    grad.addColorStop(1, shade(seg.color, -18));
-    ctx.fillStyle = grad;
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(0,0,0,.55)';
-    ctx.lineWidth = 2.2;
-    ctx.stroke();
-
-    ctx.save();
-    ctx.rotate(start + sliceAngle / 2);
-    ctx.textAlign = 'right';
-    ctx.fillStyle = '#0f1014';
-    ctx.font = `${Math.floor(radius * 0.09)}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
-    wrapText(ctx, seg.label, radius * 0.92, 0, radius * 0.4, Math.floor(radius * 0.09));
-    ctx.restore();
-  }
-}
-
+      if(seg.label === "NFT" && nftImg.complete){
+        // NFT afbeelding tonen
+        const imgSize = radius * 0.55;
+        ctx.drawImage(nftImg, radius*0.4 - imgSize/2, -imgSize/2, imgSize, imgSize);
+      } else {
+        // standaard tekst
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#0f1014';
+        ctx.font = `${Math.floor(radius*0.09)}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
+        wrapText(ctx, seg.label, radius*0.92, 0, radius*0.4, Math.floor(radius*0.09));
+      }
+      ctx.restore();
+    }
 
     // hub
     ctx.beginPath();
@@ -326,6 +302,7 @@ for (let i = 0; i < segments.length; i++) {
   drawWheel();
   fitOverlays();
   logo.addEventListener('load', drawWheel);
+  nftImg.addEventListener('load', drawWheel);
   window.addEventListener('resize', ()=>{ fitOverlays(); drawWheel(); });
   spinBtn.addEventListener('click', spin);
   powerBtn.addEventListener('click', powerUp);
