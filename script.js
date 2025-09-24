@@ -159,19 +159,18 @@ for (let i = 0; i < segments.length; i++) {
   ctx.arc(0, 0, radius, start, end);
   ctx.closePath();
 
-  if (seg.label === "NFT" && nftImg.complete) {
-   
-    // ---- NFT slice ----
-   ctx.clip(); // alleen binnen deze slice tekenen
+  
+   if(seg.label === "NFT" && nftImg.complete){
+  ctx.clip(); // slice als masker
 
-const imgSize = radius * 1.6; // groter maken zodat slice mooi gevuld wordt
-ctx.drawImage(
-  nftImg,
-   -imgSize / 1.4 + radius * 0.2,  // gecentreerd X
-  -imgSize / 2,  // gecentreerd Y
-  imgSize,       // breedte
-  imgSize        // hoogte
-);
+  const imgSize = radius * 1.4;   // schaal (zoom in/out)
+  const offsetX = -imgSize * 0.5; // horizontaal centreren
+  const offsetY = -imgSize * 0.8; // schuif omhoog (0.5 = midden, 0.8 duwt hoger)
+
+  ctx.drawImage(nftImg, offsetX, offsetY, imgSize, imgSize);
+
+  ctx.restore();
+}
 
 // rand van slice tekenen
 ctx.strokeStyle = 'rgba(0,0,0,.55)';
