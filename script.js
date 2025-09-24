@@ -43,10 +43,6 @@
   const logo = new Image();
   logo.src = "logo.png";
 
-  // --- NFT IMAGE ---
-  const nftImg = new Image();
-  nftImg.src = "NFT.png"; // vervang dit door jouw NFT-plaatje
-
   // --- SOUND FILES ---
   const tickSound = new Audio("sounds/tick.wav");     
   const confettiSound = new Audio("Confetti.wav"); 
@@ -70,6 +66,7 @@
       });
     }
 
+    // confetti sound trigger
     confettiSound.currentTime = 0;
     confettiSound.play().catch(()=>{});
   }
@@ -145,71 +142,25 @@
       ctx.fillStyle = g; ctx.fill();
     }
 
-    // in drawWheel() bij sectors
-// sectors
-for (let i = 0; i < segments.length; i++) {
-  const seg = segments[i];
-  const start = i * sliceAngle, end = start + sliceAngle;
-
-  ctx.save();
-
-  // slice path
-  ctx.beginPath();
-  ctx.moveTo(0, 0);
-  ctx.arc(0, 0, radius, start, end);
-  ctx.closePath();
-
-  
-ctx.clip(); // alleen binnen deze slice tekenen
-
-const imgSize = radius * 1.6; // minder groot zodat het beter past
-ctx.drawImage(
-  nftImg,
-  -imgSize / 2 + radius * 0.2,  // x iets opschuiven naar buiten
-  -imgSize / 2,                 // y in het midden
-  imgSize,
-  imgSize
-);
-
-// rand van slice tekenen
-ctx.strokeStyle = 'rgba(0,0,0,.55)';
-ctx.lineWidth = 2.2;
-ctx.stroke();
-
-}
-
-// rand van slice tekenen
-ctx.strokeStyle = 'rgba(0,0,0,.55)';
-ctx.lineWidth = 2.2;
-ctx.stroke();
-
-
-  } else {
-    // ---- standaard slice ----
-    const grad = ctx.createRadialGradient(0, 0, radius * 0.05, 0, 0, radius);
-    grad.addColorStop(0, '#ffffff10');
-    grad.addColorStop(0.25, seg.color);
-    grad.addColorStop(1, shade(seg.color, -18));
-    ctx.fillStyle = grad;
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(0,0,0,.55)';
-    ctx.lineWidth = 2.2;
-    ctx.stroke();
-
-    // tekst
-    ctx.save();
-    ctx.rotate(start + sliceAngle / 2);
-    ctx.textAlign = 'right';
-    ctx.fillStyle = '#0f1014';
-    ctx.font = `${Math.floor(radius * 0.09)}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
-    wrapText(ctx, seg.label, radius * 0.92, 0, radius * 0.4, Math.floor(radius * 0.09));
-    ctx.restore();
-  }
-
-  ctx.restore();
-}
-
-
+    // sectors
+    for(let i=0;i<segments.length;i++){
+      const seg = segments[i];
+      const start = i*sliceAngle, end = start+sliceAngle;
+      ctx.beginPath(); ctx.moveTo(0,0); ctx.arc(0,0,radius,start,end); ctx.closePath();
+      const grad = ctx.createRadialGradient(0,0, radius*0.05, 0,0, radius);
+      grad.addColorStop(0, '#ffffff10');
+      grad.addColorStop(0.25, seg.color);
+      grad.addColorStop(1, shade(seg.color, -18));
+      ctx.fillStyle = grad; ctx.fill();
+      ctx.strokeStyle = 'rgba(0,0,0,.55)'; ctx.lineWidth = 2.2; ctx.stroke();
+      ctx.save();
+      ctx.rotate(start + sliceAngle/2);
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#0f1014';
+      ctx.font = `${Math.floor(radius*0.09)}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
+      wrapText(ctx, seg.label, radius*0.92, 0, radius*0.4, Math.floor(radius*0.09));
+      ctx.restore();
+    }
 
     // hub
     ctx.beginPath();
@@ -340,7 +291,6 @@ ctx.stroke();
   drawWheel();
   fitOverlays();
   logo.addEventListener('load', drawWheel);
-  nftImg.addEventListener('load', drawWheel);
   window.addEventListener('resize', ()=>{ fitOverlays(); drawWheel(); });
   spinBtn.addEventListener('click', spin);
   powerBtn.addEventListener('click', powerUp);
