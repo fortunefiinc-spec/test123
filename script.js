@@ -158,7 +158,7 @@
       ctx.strokeStyle = 'rgba(0,0,0,.55)'; ctx.lineWidth = 2.2; ctx.stroke();
       ctx.save();
       ctx.rotate(start + sliceAngle/2);
-
+    }
       if(seg.label === "NFT" && nftImg.complete){
         // NFT kaart perfect in slice
         ctx.save();
