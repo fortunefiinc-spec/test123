@@ -168,8 +168,8 @@
         ctx.closePath();
         ctx.clip();
 
-        const imgW = radius * 1.2;
-        const imgH = radius * 2.6;
+        const imgW = radius * 0.2;
+        const imgH = radius * 0.6;
         ctx.drawImage(nftImg, radius*0.25 - imgW/2, -imgH/2, imgW, imgH);
 
         ctx.restore();
