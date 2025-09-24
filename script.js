@@ -169,17 +169,19 @@
         ctx.clip();
   
                
-        const imgW = radius * 0.2;
-        const imgH = radius * 0.6;
-        ctx.drawImage(nftImg, radius*0.5 - imgW/2, -imgH/2, imgW, imgH);
+        
+  // positie van afbeelding
+  const imgW = radius * 0.2;
+  const imgH = radius * 0.6;
+  const imgX = radius*0.5 - imgW/2;
+  const imgY = -imgH/2;
 
-        ctx.restore();
-      } else {
-        ctx.textAlign = 'right';
-        ctx.fillStyle = '#0f1014';
-        ctx.font = `${Math.floor(radius*0.09)}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
-        wrapText(ctx, seg.label, radius*0.92, 0, radius*0.4, Math.floor(radius*0.09));
-      }
+  // rotatie toevoegen
+  ctx.translate(radius*0.5, 0);   // verplaats origin naar het midden van de slice
+  ctx.rotate(Math.PI/8);          // bv. 22.5 graden draaien (pas aan naar wens)
+  ctx.translate(-radius*0.5, 0);  // terugzetten
+
+  ctx.drawImage(nftImg, imgX, imgY, imgW, imgH);
       ctx.restore();
     }
 
