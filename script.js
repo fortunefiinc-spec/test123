@@ -155,7 +155,7 @@
       grad.addColorStop(0.25, seg.color);
       grad.addColorStop(1, shade(seg.color, -18));
       ctx.fillStyle = grad; ctx.fill();
-      ctx.strokeStyle = 'rgba(0,0,0,.55)'; ctx.lineWidth = 2.2; ctx.stroke();
+      ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 2.2; ctx.stroke();
 
       ctx.save();
       ctx.rotate(start + sliceAngle/2);
@@ -171,7 +171,7 @@
 
         ctx.rotate(Math.PI/2); // 180° draaien
         const imgSize = radius * 0.5;
-        ctx.drawImage(nftImg, -imgSize/2.46, -imgSize/0.55, imgSize/1.4, imgSize);
+        ctx.drawImage(nftImg, -imgSize/2.46, -imgSize/0.53, imgSize/1.4, imgSize);
         ctx.fillStyle = '#000';
         
 
